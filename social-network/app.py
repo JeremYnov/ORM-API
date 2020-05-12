@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,render_template
 from flask_sqlalchemy import SQLAlchemy
 from __init__ import  db
 
@@ -16,7 +16,7 @@ with app.app_context():
 
 @app.route('/')
 def index():
-    return "Hello World"
+    return render_template('pages/index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
