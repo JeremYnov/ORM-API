@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from app.models import db, User, Post, Comment
 
 main = Blueprint('main', __name__, url_prefix='/')
 
@@ -6,20 +7,20 @@ main = Blueprint('main', __name__, url_prefix='/')
 @main.route('/')
 def index():
     # test insertion ligne
-    # user = User(username="louis", age=4, mail="aaa@ynov.com", password="aaaa")
-    # db.session.add(user)
+    user = User(username="louis", age=4, mail="aaa@ynov.com", password="aaaa")
+    db.session.add(user)
 
-    # post = Post(title="louis", content="aaa@ynov.com", image="aaaa",
-    #             publication_date='2019-01-16 00:00:00', modification_date='2019-01-16 00:00:00', user=user)
-    # db.session.add(post)
+    post = Post(title="louis", content="aaa@ynov.com", image="aaaa",
+                publication_date='2019-01-16 00:00:00', modification_date='2019-01-16 00:00:00', user=user)
+    db.session.add(post)
 
-    # user.like.append(post)
+    user.like.append(post)
 
-    # comment = Comment(content="blabla", publication_date='2019-01-16 00:00:00')
-    # comment.post = post
-    # user.comment.append(comment)
+    comment = Comment(content="blabla", publication_date='2019-01-16 00:00:00')
+    comment.post = post
+    user.comment.append(comment)
 
-    # db.session.commit()
+    db.session.commit()
     return render_template('pages/index.html')
 
 
