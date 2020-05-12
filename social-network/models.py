@@ -2,8 +2,8 @@ from __init__ import  db
 
 
 like = db.Table('like',
-    db.Column('user_id', db.Integer, db.ForeignKey('User.id'), primary_key=True),
-    db.Column('post_id', db.Integer, db.ForeignKey('Post.id'), primary_key=True),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True),
 )
 
 class User(db.Model):
