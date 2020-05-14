@@ -8,17 +8,19 @@ main = Blueprint('main', __name__, url_prefix='/')
 def index():
     return render_template('pages/index.html')
 
+
 @main.route('/test')
-def test():    
+def test():
     # test insertion ligne
     user = User("louis", 4, "aaa@ynov.com", "aaaa")
     db.session.add(user)
 
-    receive = User(username="louisss", age=7, mail="aa@ynov.com", password="aa")
+    receive = User(username="louisss", age=7,
+                   mail="aa@ynov.com", password="aa")
     db.session.add(receive)
-    
-    u = user.query.filter_by(id = 1).first()
-    r = user.query.filter_by(id = 2).first()
+
+    u = user.query.filter_by(id=1).first()
+    r = user.query.filter_by(id=2).first()
 
     post = Post("louis", "aaa@ynov.com", "aaaa",
                 '2019-01-16 00:00:00', '2019-01-16 00:00:00', u)
@@ -38,9 +40,15 @@ def test():
 
     db.session.commit()
     return "test"
-    
 
 
 @main.route('/user')
 def user():
     return "controller user"
+
+
+@main.route('/createdb')
+def createdb():
+    db.drop_all()
+    db.create_all()
+    return "la db a été créer"
