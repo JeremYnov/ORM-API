@@ -3,6 +3,13 @@
 
 {% block body %}
 
-<h1>{{id}}</h1>
+{% for message in messages %}
+    <p>{{message.set_date}}</p>
+    <p>{{message.content}}</p>
+    <p>{{message.send_by}}</p>
+    {% if userLog != message.send_by %}
+        <img src="../../../static/img/{{message.receive_by.avatar}}" alt="">
+    {% endif %}
+{% endfor %}
 
 {% endblock body %}
