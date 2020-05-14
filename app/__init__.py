@@ -3,7 +3,6 @@ from app import config
 from app.models import db
 from app.controller import user, post, message, fixtures
 
-
 app = Flask(__name__)
 app.config.from_object(config.Config)
 
