@@ -3,6 +3,12 @@
 
 {% block body %}
 
+<a href="{{url_for('message.list_message')}}">< Voir autres messages</a>
+
+{% if error != null %}
+<p>{{error}}</p>
+{% endif %}
+
 {% for message in messages %}
     <p>{{message.set_date}}</p>
     <p>{{message.content}}</p>
@@ -11,5 +17,12 @@
         <img src="../../../static/img/{{message.receive_by.avatar}}" alt="">
     {% endif %}
 {% endfor %}
+
+<form action="" method="post">
+    <label for="">content</label>
+    <textarea name="content" id="" cols="30" rows="10"></textarea>
+
+    <button type="submit">Valider</button>
+</form>
 
 {% endblock body %}
