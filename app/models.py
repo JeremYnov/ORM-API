@@ -19,6 +19,7 @@ class User(db.Model):
     age = db.Column(db.Integer)
     mail = db.Column(db.String(255))
     password = db.Column(db.String(255))
+    avatar = db.Column(db.String(255))
 
     post = db.relationship('Post', backref='user')
 
@@ -33,11 +34,12 @@ class User(db.Model):
     send_by = db.relationship("Follow", foreign_keys='Follow.follower_id', back_populates="follower")
     receive_by = db.relationship("Follow", foreign_keys='Follow.followby_id', back_populates="followby")                    
 
-    def __init__(self, username, age, mail, password):
+    def __init__(self, username, age, mail, password, avatar):
         self.username = username
         self.age = age
         self.mail = mail
         self.password = password
+        self.avatar = avatar
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
