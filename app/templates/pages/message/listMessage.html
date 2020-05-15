@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}messages{% endblock %}
+
+{% block body %}
+
+{% block link %}<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
+
+<button type="submit" class="add-talk-js">Nouveau message</button>
+
+{% for message in listMessage %}
+<p>{{message.content}}</p>
+<p>{{message.set_date}}</p>
+{% if userLog == message.send_by %}
+<a href="{{ url_for('message.talk', id=message.receive_by.id) }}">
+<img height="50px" width="50px" src="../../../static/img/{{message.receive_by.avatar}}" alt="">
+</p> {{message.receive_by.username}}</p>
+{% else %}
+<a href="{{ url_for('message.talk', id=message.send_by.id) }}">
+<img height="50px" width="50px" src="../../../static/img/{{message.receive_by.avatar}}" alt="">
+</p>{{message.send_by.username}}</p>
+{% endif %}
+</a>
+
+{% endfor %}
+
+
+<div class="popup">
+    <div class="popup-content">
+        <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
+        <input type="text" placeholder="recherche..">
+    </div>
+</div>
+
+{% block js %} <script src="{{ url_for('static',filename='js/popup.js') }}"></script> {% endblock %}
+{% endblock body %}

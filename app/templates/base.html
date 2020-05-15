@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/nav.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/global.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+    {% block link %}{% endblock %}
 </head>
 
 <body>
@@ -22,6 +23,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="{{ url_for('static',filename='js/burger.js') }}"></script>
+    {% block js %}{% endblock %}
 </body>
 
 </html>

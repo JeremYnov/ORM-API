@@ -4,7 +4,7 @@ from app.models import db, User, Post, Comment, Message, Follow
 main = Blueprint('main', __name__, url_prefix='/')
 
 
-@main.route('/')
+@main.route('/zeaafae')
 def index():
     return render_template('pages/index.html')
 
@@ -18,6 +18,7 @@ def test():
     receive = User(username="louisss", age=7,
                    mail="aa@ynov.com", password="aa")
     db.session.add(receive)
+    db.session.commit()
 
     u = user.query.filter_by(id=1).first()
     r = user.query.filter_by(id=2).first()
@@ -35,7 +36,7 @@ def test():
     message = Message('aaa', '2019-01-16 00:00:00', u, r)
     db.session.add(message)
 
-    follow = Follow(u, r)
+    follow = Follow(user, receive)
     db.session.add(follow)
 
     db.session.commit()
