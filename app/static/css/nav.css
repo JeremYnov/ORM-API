@@ -3,10 +3,12 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    background-color: #0b0c10;
+    
 }
 
-.header-logo img {
-    height: 60px;
+.header-logo h1 {
+    color: #66fcf1;
 }
 
 .header-nav .nav-list {
@@ -22,7 +24,7 @@
 }
 
 .header-nav .nav-item a {
-    color: black;
+    color: #66fcf1;
     text-decoration: none;
 }
 

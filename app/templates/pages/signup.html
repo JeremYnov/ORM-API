@@ -1,1 +1,21 @@
 {% extends "base.html" %}
+{% block body %}
+<h1>Créer un compte</h1>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-danger">
+        {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+    </div>
+{% endif %}
+{% endwith %}
+
+<form action="/signup" method="POST">
+    <input type="text" name="username">
+    <input type="number" name="age">
+    <input type="email" name="email">
+    <input type="password" name="password">
+    <input type="password" name="repassword">
+    <input type="submit">
+</form>
+{% endblock body %}

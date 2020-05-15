@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.models import db, User, Post, Comment, Message, Follow
 
 main = Blueprint('main', __name__, url_prefix='/')
@@ -53,3 +53,32 @@ def createdb():
     db.drop_all()
     db.create_all()
     return "la db a été créer"
+
+@main.route('/login')
+def login():
+    return render_template('pages/login.html')
+
+@main.route('/signup')
+def signup():    
+    return render_template('pages/signup.html')
+
+@main.route('/signup', methods = ['POST'])
+def signup_post():
+    username = request.form.get('username')
+    age = request.form.get('age')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    passwordRepeat = request.form.get('repassword')
+
+    user = User.query.filter_by(email=email).first
+
+    if user:
+        flash('L\'adresse email utilisée est déjà utilisée')
+        return redirect(url_for('user.signup'))
+    
+    newUser = User(username=username, age=age, mail=email, password=password)
+
+    db.session.add(newUser)
+    db.session.commit()
+
+    return redirect(url_for('user.login'))
