@@ -1,8 +1,49 @@
 {% extends "base.html" %}
 {% block title %}Home page{% endblock %}
 
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
+
 {% block body %}
+
+{% if error == True %}
+<div class="error">
+    <p>{{message}}</p>
+</div>
+{% elif error == False %}
+<div class="success">
+    <p>{{message}}</p>
+</div>
+{% endif %}
+
+<button type="submit" class="add-talk-js">Nouveau post</button>
 
 {{posts}}
 
+<div class="popup">
+    <div class="popup-content">
+        <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
+        <form action="{{ URL_ROOT + 'add/new/post' }}" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="title">titre</label>
+                <input type="text" name="title" id="name" placeholder="">
+            </div>
+            <div>
+                <label for="image">image</label>
+                <input type="file" name="image" id="image">
+            </div>
+            <div>
+                <label for="content">description</label>
+                <textarea name="content" id="content" cols="30" rows="10"></textarea>
+            </div>
+            <div>
+                <button type="submit">Envoyer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock body %}
+
+{% block js %}
+<script src="{{ url_for('static',filename='js/popup.js') }}"></script> {% endblock %}
