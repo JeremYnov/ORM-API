@@ -4,6 +4,7 @@ from sqlalchemy import or_
 import datetime
 from datetime import timedelta
 import pymysql
+from operator import itemgetter
 
 message = Blueprint('message', __name__, url_prefix='/')
 
@@ -11,7 +12,7 @@ message = Blueprint('message', __name__, url_prefix='/')
 def list_message():
     # on recupere le user connecter
     userLog = User.query.filter_by(id=1).first()
-    messages = db.session.query(Message).filter(or_(Message.send_by_id==1, Message.receive_by_id==1)).order_by(Message.set_date).all()
+    messages = db.session.query(Message).filter(or_(Message.send_by_id==1, Message.receive_by_id==1)).order_by(Message.set_date.desc()).all()
     listMessage = []
     statut = False
     for message in messages:
@@ -31,8 +32,8 @@ def list_message():
                     statut = True
 
         if statut == False :      
-            listMessage.append(message)      
-            
+            listMessage.append(message)                      
+    # messageUser = sorted(listMessage, key=itemgetter(0))    
                 
 
     return render_template('pages/message/listMessage.html', listMessage=listMessage, userLog=userLog)
