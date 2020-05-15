@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from app.models import db, User, Post, Comment, Message, Follow
 from sqlalchemy import or_
 import datetime
+from datetime import timedelta
 
 message = Blueprint('message', __name__, url_prefix='/')
 
@@ -47,7 +48,7 @@ def talk(id):
         if content == "":
             error = "vous n'avez pas écris de message"
         else:    
-            now = datetime.datetime.utcnow()
+            now = datetime.datetime.utcnow() + timedelta(hours=2)
             message = Message(content, now.strftime('%Y-%m-%d %H:%M:%S'), userLog, receiveUser)
             db.session.add(message)
             db.session.commit()

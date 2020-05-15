@@ -3,6 +3,9 @@
 
 {% block body %}
 
+{% block link %}<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
+
+<button type="submit" class="add-talk-js">Nouveau message</button>
 
 {% for message in listMessage %}
 <p>{{message.content}}</p>
@@ -20,4 +23,13 @@
 
 {% endfor %}
 
+
+<div class="popup">
+    <div class="popup-content">
+        <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
+        <input type="text" placeholder="recherche..">
+    </div>
+</div>
+
+{% block js %} <script src="{{ url_for('static',filename='js/popup.js') }}"></script> {% endblock %}
 {% endblock body %}
