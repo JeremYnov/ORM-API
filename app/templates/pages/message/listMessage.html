@@ -27,9 +27,14 @@
 <div class="popup">
     <div class="popup-content">
         <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
-        <input type="text" placeholder="recherche..">
+        <input type="text" class="search_bar-js" placeholder="recherche..">
+        <div class="result_user_js"></div>
     </div>
 </div>
 
-{% block js %} <script src="{{ url_for('static',filename='js/popup.js') }}"></script> {% endblock %}
+{% block js %} 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{{ url_for('static',filename='js/ajax_newMessage.js') }}"></script> 
+<script src="{{ url_for('static',filename='js/popup.js') }}"></script> 
+{% endblock %}
 {% endblock body %}
