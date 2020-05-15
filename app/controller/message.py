@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from app.models import db, User, Post, Comment, Message, Follow
 from sqlalchemy import or_
 import datetime
 from datetime import timedelta
+import pymysql
 
 message = Blueprint('message', __name__, url_prefix='/')
 
@@ -44,7 +45,6 @@ def talk(id):
     error = None
     if request.method == 'POST':
         content = request.form['content']
-        print(content)
         if content == "":
             error = "vous n'avez pas écris de message"
         else:    
@@ -56,3 +56,19 @@ def talk(id):
 
 
     return render_template('pages/message/talk.html', messages=messages, userLog=userLog, id=id, error=error)    
+
+
+
+@message.route('/user', methods=['GET', 'POST'])  
+def search_user(): 
+    user = request.form.get("text")
+
+    db = pymysql.connect("localhost", "root", "", "social_network")
+    cursor = db.cursor()
+    sql = "select id, username from User where username LIKE '{}%' order by username".format(user)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    userSearch = []
+    for r in result:
+        userSearch.append({"id": r[0], "username": r[1]})
+    return jsonify(userSearch)
