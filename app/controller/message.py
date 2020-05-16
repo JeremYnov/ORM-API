@@ -70,6 +70,9 @@ def search_user():
     cursor.execute(sql)
     result = cursor.fetchall()
     userSearch = []
+    count = 0
     for r in result:
-        userSearch.append({"id": r[0], "username": r[1]})
+        if count <= 10:
+            userSearch.append({"id": r[0], "username": r[1]})
+        count += 1
     return jsonify(userSearch)

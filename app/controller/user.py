@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.models import db, User, Post, Comment, Message, Follow
+import requests
 
 
 main = Blueprint('main', __name__, url_prefix='/')
@@ -87,21 +88,17 @@ def signup_post():
 @main.route('/profil/<int:id>', strict_slashes=False)
 @main.route('/profil/',  methods=['GET', 'POST'], strict_slashes=False)
 def profil(id=None):
+    URL_ROOT = request.url_root
+    error = None
     if(id == None):
+        # user connecter
+        url = URL_ROOT + 'api/post/user/' + str(1)
         user = User.query.filter_by(id=1).first()
-        followers = Follow.query.filter_by(follower_id=user.id).count()
-        following = Follow.query.filter_by(followby_id=user.id).count()
-        numberPosts = Post.query.filter_by(user_id=user.id).count()
-        stats = {"followers": followers, "following": following, "posts": numberPosts}
-
-        posts = Post.query.filter_by(user_id=user.id).all()
-
-        error = None
         if request.method == 'POST':
             username = request.form['username']
             age = request.form['age']
             if username == "":
-                error = "vous n'avez pas écris de message"
+                error = "vous n'avez pas mis votre username"
             elif age == "":
                 error = "vous n'avez pas mis votre age"   
             else:
@@ -109,4 +106,18 @@ def profil(id=None):
                 user.age = age
                 db.session.commit()
 
-    return render_template('pages/user/profil.html', user=user, stats=stats, posts=posts, error=error)
+    else:
+        url = URL_ROOT + 'api/post/user/' + str(id)
+        user = User.query.filter_by(id=1).first()
+        
+    
+    
+    followers = Follow.query.filter_by(follower_id=user.id).count()
+    following = Follow.query.filter_by(followby_id=user.id).count()
+    numberPosts = Post.query.filter_by(user_id=user.id).count()
+    stats = {"followers": followers, "following": following, "posts": numberPosts}
+
+    response = requests.get(url)
+    user = response.json()
+
+    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user)
