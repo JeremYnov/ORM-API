@@ -4,6 +4,10 @@
 {% block link %}<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
 {% block body %}
 
+{% if error != None %}
+<p>{{error}}</p>
+{% endif %}
+
 <button type="submit" class="add-talk-js">modifier Profil</button>
 
 <p>nom : {{user.username}}</p>

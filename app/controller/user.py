@@ -85,7 +85,7 @@ def signup_post():
 
 
 @main.route('/profil/<int:id>', strict_slashes=False)
-@main.route('/profil/', strict_slashes=False)
+@main.route('/profil/',  methods=['GET', 'POST'], strict_slashes=False)
 def profil(id=None):
     if(id == None):
         user = User.query.filter_by(id=1).first()
@@ -108,6 +108,5 @@ def profil(id=None):
                 user.username = username
                 user.age = age
                 db.session.commit()
-                return redirect(url_for('main.profil'))
 
-    return render_template('pages/user/profil.html', user=user, stats=stats, posts=posts)
+    return render_template('pages/user/profil.html', user=user, stats=stats, posts=posts, error=error)
