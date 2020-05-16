@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Profil{% endblock %}
+
+{% block link %}<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
+{% block body %}
+
+<button type="submit" class="add-talk-js">modifier Profil</button>
+
+<p>nom : {{user.username}}</p>
+<p>age : {{user.age}}</p>
+<p>mail : {{user.mail}}</p>
+<img src="../../../static/img/{{user.avatar}}" alt="">
+
+<p>post : {{stats.posts}}</p>
+<p>abonnements : {{stats.followers}}</p>
+<p>abonné : {{stats.following}}</p>
+
+{% for post in posts %}
+    {{post}}
+{% endfor %}
+
+<div class="popup">
+    <div class="popup-content">
+        <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
+        <form action="" method="post">
+            <label for="">username</label>
+            <input type="text" name="username" value="{{user.username}}">
+
+            <label for="">age</label>
+            <input type="number" name="age" value="{{user.age}}">
+
+            <label for="">avatar</label>
+            <input type="file" name="avatar">
+
+            <button type="submit">modifier</button>
+        </form>
+    </div>
+</div>
+
+{% block js %}
+<script src="{{ url_for('static',filename='js/popup.js') }}"></script> 
+{% endblock %}
+
+{% endblock body %}

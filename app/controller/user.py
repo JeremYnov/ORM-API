@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.models import db, User, Post, Comment, Message, Follow
 
-main = Blueprint('main', __name__, url_prefix='/')
 
+main = Blueprint('main', __name__, url_prefix='/')
 
 @main.route('/zeaafae')
 def index():
@@ -82,3 +82,32 @@ def signup_post():
     db.session.commit()
 
     return redirect(url_for('user.login'))
+
+
+@main.route('/profil/<int:id>', strict_slashes=False)
+@main.route('/profil/', strict_slashes=False)
+def profil(id=None):
+    if(id == None):
+        user = User.query.filter_by(id=1).first()
+        followers = Follow.query.filter_by(follower_id=user.id).count()
+        following = Follow.query.filter_by(followby_id=user.id).count()
+        numberPosts = Post.query.filter_by(user_id=user.id).count()
+        stats = {"followers": followers, "following": following, "posts": numberPosts}
+
+        posts = Post.query.filter_by(user_id=user.id).all()
+
+        error = None
+        if request.method == 'POST':
+            username = request.form['username']
+            age = request.form['age']
+            if username == "":
+                error = "vous n'avez pas écris de message"
+            elif age == "":
+                error = "vous n'avez pas mis votre age"   
+            else:
+                user.username = username
+                user.age = age
+                db.session.commit()
+                return redirect(url_for('main.profil'))
+
+    return render_template('pages/user/profil.html', user=user, stats=stats, posts=posts)
