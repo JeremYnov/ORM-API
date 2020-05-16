@@ -85,11 +85,12 @@ def signup_post():
     return redirect(url_for('user.login'))
 
 
-@main.route('/profil/<int:id>', strict_slashes=False)
+@main.route('/profil/<int:id>', methods=['GET', 'POST'], strict_slashes=False)
 @main.route('/profil/',  methods=['GET', 'POST'], strict_slashes=False)
 def profil(id=None):
     URL_ROOT = request.url_root
     error = None
+
     if(id == None):
         # user connecter
         url = URL_ROOT + 'api/post/user/' + str(1)
@@ -105,19 +106,36 @@ def profil(id=None):
                 user.username = username
                 user.age = age
                 db.session.commit()
-
+    # 1 est la personne connecter
+    elif id == 1:            
+        return redirect(url_for('main.profil', id=None))
     else:
         url = URL_ROOT + 'api/post/user/' + str(id)
-        user = User.query.filter_by(id=1).first()
-        
-    
-    
+        user = User.query.filter_by(id=id).first()
+        # follower_id=1 etant la personne connecter
+           
     followers = Follow.query.filter_by(follower_id=user.id).count()
     following = Follow.query.filter_by(followby_id=user.id).count()
     numberPosts = Post.query.filter_by(user_id=user.id).count()
     stats = {"followers": followers, "following": following, "posts": numberPosts}
 
+    follow = Follow.query.filter_by(follower_id=1, followby_id=id).first()
+    if not(follow):
+        follow = 1
+
+    if request.method == 'POST':
+        if follow == 1:
+            # 1 personne connecter
+            userLog = User.query.filter_by(id=1).first()
+            following = Follow(userLog, user)
+            db.session.add(following)
+        else:
+            db.session.delete(follow)
+
+        db.session.commit()
+        return redirect(url_for('main.profil', id=id))
+
     response = requests.get(url)
     user = response.json()
 
-    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user)
+    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user, follow=follow)
