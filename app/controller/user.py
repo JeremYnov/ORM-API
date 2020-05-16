@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.models import db, User, Post, Comment, Message, Follow
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user
+import requests
 
 
 main = Blueprint('main', __name__, url_prefix='/')
@@ -109,29 +110,57 @@ def login_post():
     return redirect(url_for('main.profile'))
 
 
-@main.route('/profil/<int:id>', strict_slashes=False)
+@main.route('/profil/<int:id>', methods=['GET', 'POST'], strict_slashes=False)
 @main.route('/profil/',  methods=['GET', 'POST'], strict_slashes=False)
 def profil(id=None):
+    URL_ROOT = request.url_root
+    error = None
+
     if(id == None):
+        # user connecter
+        url = URL_ROOT + 'api/post/user/' + str(1)
         user = User.query.filter_by(id=1).first()
-        followers = Follow.query.filter_by(follower_id=user.id).count()
-        following = Follow.query.filter_by(followby_id=user.id).count()
-        numberPosts = Post.query.filter_by(user_id=user.id).count()
-        stats = {"followers": followers, "following": following, "posts": numberPosts}
-
-        posts = Post.query.filter_by(user_id=user.id).all()
-
-        error = None
         if request.method == 'POST':
             username = request.form['username']
             age = request.form['age']
             if username == "":
-                error = "vous n'avez pas écris de message"
+                error = "vous n'avez pas mis votre username"
             elif age == "":
                 error = "vous n'avez pas mis votre age"   
             else:
                 user.username = username
                 user.age = age
                 db.session.commit()
+    # 1 est la personne connecter
+    elif id == 1:            
+        return redirect(url_for('main.profil', id=None))
+    else:
+        url = URL_ROOT + 'api/post/user/' + str(id)
+        user = User.query.filter_by(id=id).first()
+        # follower_id=1 etant la personne connecter
+           
+    followers = Follow.query.filter_by(follower_id=user.id).count()
+    following = Follow.query.filter_by(followby_id=user.id).count()
+    numberPosts = Post.query.filter_by(user_id=user.id).count()
+    stats = {"followers": followers, "following": following, "posts": numberPosts}
 
-    return render_template('pages/user/profil.html', user=user, stats=stats, posts=posts, error=error)
+    follow = Follow.query.filter_by(follower_id=1, followby_id=id).first()
+    if not(follow):
+        follow = 1
+
+    if request.method == 'POST':
+        if follow == 1:
+            # 1 personne connecter
+            userLog = User.query.filter_by(id=1).first()
+            following = Follow(userLog, user)
+            db.session.add(following)
+        else:
+            db.session.delete(follow)
+
+        db.session.commit()
+        return redirect(url_for('main.profil', id=id))
+
+    response = requests.get(url)
+    user = response.json()
+
+    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user, follow=follow)

@@ -1,37 +1,67 @@
 {% extends "base.html" %}
 {% block title %}Profil{% endblock %}
 
-{% block link %}<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
 {% block body %}
 
+<h1>profil</h1>
 {% if error != None %}
 <p>{{error}}</p>
 {% endif %}
 
-<button type="submit" class="add-talk-js">modifier Profil</button>
+{% if id == None %}
 
-<p>nom : {{user.username}}</p>
-<p>age : {{user.age}}</p>
-<p>mail : {{user.mail}}</p>
-<img src="../../../static/img/{{user.avatar}}" alt="">
+<button type="submit" class="add-talk-js">modifier Profil</button>
+<button><a href="{{url_for('post.newPost')}}">creer un nouveau post</a></button>
+
+{% else %}
+
+<button><a href="{{url_for('message.talk', id=user.results.id)}}">ecrire un message</a></button>
+
+<form action="" method="post">
+{% if follow == 1 %}
+<button type="submit" name="followUser">S'abonner</button>
+{% else %}
+<button type="submit" name="unfollowUser">Se désabonner</button>
+{% endif %}
+</form>
+{% endif %}
+
+
+<p>nom : {{user.results.username}}</p>
+<p>age : {{user.results.age}}</p>
+<p>mail : {{user.results.mail}}</p>
+<img src="../../../static/img/{{user.results.avatar}}" alt="">
 
 <p>post : {{stats.posts}}</p>
 <p>abonnements : {{stats.followers}}</p>
 <p>abonné : {{stats.following}}</p>
 
-{% for post in posts %}
-    {{post}}
+<h1>post</h1>
+
+{% for post in user.results.posts %}
+<div>
+    <p>{{user.results.username}}</p>
+    <p>{{post.title}}</p>
+    <p>{{post.publication_date}}</p>
+    <img src="../../../static/img/{{post.image}}" alt="">
+    <p>{{post.content}}</p>
+    <p>{{post.like}}</p>
+</div>
+
 {% endfor %}
 
+{% if id == None %}
 <div class="popup">
     <div class="popup-content">
         <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
         <form action="" method="post">
             <label for="">username</label>
-            <input type="text" name="username" value="{{user.username}}">
+            <input type="text" name="username" value="{{user.results.username}}">
 
             <label for="">age</label>
-            <input type="number" name="age" value="{{user.age}}">
+            <input type="number" name="age" value="{{user.results.age}}">
 
             <label for="">avatar</label>
             <input type="file" name="avatar">
@@ -40,9 +70,10 @@
         </form>
     </div>
 </div>
+{% endif %}
 
 {% block js %}
-<script src="{{ url_for('static',filename='js/popup.js') }}"></script> 
+<script src="{{ url_for('static',filename='js/popup.js') }}"></script>
 {% endblock %}
 
 {% endblock body %}
