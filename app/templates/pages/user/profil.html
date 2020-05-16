@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Profil{% endblock %}
+{% block title %}Profil - {{user.results.username}}{% endblock %}
 
 {% block link %}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
@@ -35,8 +35,8 @@
 <img src="../../../static/img/{{user.results.avatar}}" alt="">
 
 <p>post : {{stats.posts}}</p>
-<p>abonnements : {{stats.followers}}</p>
-<p>abonné : {{stats.following}}</p>
+<button><a href="{{ url_for('main.followers', id=None ) }}">abonnements : {{stats.following}}</a></button>
+<p>abonné : {{stats.followers}}</p>
 
 <h1>post</h1>
 
