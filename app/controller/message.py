@@ -66,13 +66,13 @@ def search_user():
 
     db = pymysql.connect("localhost", "root", "", "social_network")
     cursor = db.cursor()
-    sql = "select id, username from User where username LIKE '{}%' order by username".format(user)
+    sql = "select id, username, avatar from User where username LIKE '{}%' order by username".format(user)
     cursor.execute(sql)
     result = cursor.fetchall()
     userSearch = []
     count = 0
     for r in result:
         if count <= 10:
-            userSearch.append({"id": r[0], "username": r[1]})
+            userSearch.append({"id": r[0], "username": r[1], "avatar": r[2]})
         count += 1
     return jsonify(userSearch)

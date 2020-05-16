@@ -11,10 +11,21 @@
 {% endif %}
 
 {% if id == None %}
+
 <button type="submit" class="add-talk-js">modifier Profil</button>
 <button><a href="{{url_for('post.newPost')}}">creer un nouveau post</a></button>
+
 {% else %}
+
 <button><a href="{{url_for('message.talk', id=user.results.id)}}">ecrire un message</a></button>
+
+<form action="" method="post">
+{% if follow == 1 %}
+<button type="submit" name="followUser">S'abonner</button>
+{% else %}
+<button type="submit" name="unfollowUser">Se désabonner</button>
+{% endif %}
+</form>
 {% endif %}
 
 
@@ -41,6 +52,7 @@
 
 {% endfor %}
 
+{% if id == None %}
 <div class="popup">
     <div class="popup-content">
         <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
@@ -58,6 +70,7 @@
         </form>
     </div>
 </div>
+{% endif %}
 
 {% block js %}
 <script src="{{ url_for('static',filename='js/popup.js') }}"></script>

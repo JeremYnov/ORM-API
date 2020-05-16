@@ -9,7 +9,7 @@ $(document).ready(function(){
                 if(res != ""){
                     $('.result_user_js').html("");
                     $.each(res,function(index,value) {          
-                        data = '<p><a href="/talk/' + value.id + '">' + value.username + '</a></p>'
+                        data = '<div><img height="20px" width="20px" src="../../../static/img/' + value.avatar + '" alt=""><a href="/talk/' + value.id + '">' + value.username + '</a></div>'
                         $('.result_user_js').append(data);
                     })
                 }else{
