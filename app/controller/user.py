@@ -138,8 +138,8 @@ def profil(id=None):
         user = User.query.filter_by(id=id).first()
         # follower_id=1 etant la personne connecter
            
-    followers = Follow.query.filter_by(follower_id=user.id).count()
-    following = Follow.query.filter_by(followby_id=user.id).count()
+    following = Follow.query.filter_by(follower_id=user.id).count()
+    followers = Follow.query.filter_by(followby_id=user.id).count()
     numberPosts = Post.query.filter_by(user_id=user.id).count()
     stats = {"followers": followers, "following": following, "posts": numberPosts}
 
@@ -163,3 +163,26 @@ def profil(id=None):
     user = response.json()
 
     return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user, follow=follow)
+
+
+@main.route('/profil/<int:id>/followers', methods=['GET', 'POST'], strict_slashes=False)
+@main.route('/profil/followers', methods=['GET', 'POST'], strict_slashes=False)
+def followers(id=None):
+    userLog = User.query.filter_by(id=1).first()
+    if id == None:
+        # personne connecter le 1
+        followers = Follow.query.filter_by(follower_id=userLog.id).all()
+
+        if request.method == 'POST':
+            follower = request.form.get('follower')
+            userLogUnFollow = Follow.query.filter_by(follower_id=userLog.id, followby_id=follower).first()
+            db.session.delete(userLogUnFollow)
+            db.session.commit()
+            return redirect(url_for('main.followers', id=None))
+    else: 
+        user = User.query.filter_by(id=id).first()
+        followers = Follow.query.filter_by(follower_id=user.id).all()       
+
+
+    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog)
+

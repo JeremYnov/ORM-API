@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}abonné{% endblock %}
+
+{% block body %}
+
+{% if followers == [] %}
+    <p>tu n'es abonné à personne</p>
+
+{% else %}
+    
+{% for follower in followers %}
+<a href="{{ url_for('main.profil', id=follower.followby_id ) }}">
+    <p>{{follower.followby.username}}</p>
+    <img height="50px" width="50px" src="<img src=../../../static/img/{{follower.followby.avatar}}" alt="">
+</a>
+<form action="" method="post">
+    <input type="hidden" name="follower" value="{{follower.followby_id}}">
+    {% if id == None %}
+    <button type="submit">Se désabonner</button>
+    {% endif %}
+    {% if id != None %}
+        {% if follower.follower_id != userLog.id %}
+
+        {% if follower.followby_id != userLog.id %}
+        <button type="submit">S'abonné</button> 
+        {% endif %} 
+        {% endif %} 
+    {% endif %}    
+    
+</form>
+
+{% endfor %}
+{% endif %}
+{% endblock body %}
