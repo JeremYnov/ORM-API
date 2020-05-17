@@ -92,26 +92,28 @@ def profil(id=None):
     userLog = current_user
     URL_ROOT = request.url_root
     error = None
-
+    follow = 0
     if(id == None):
         # user connecter
         url = URL_ROOT + 'api/post/user/' + str(userLog.id)
         user = User.query.filter_by(id=userLog.id).first()
 
         if request.method == 'POST':
-            username = request.form['username']
-            age = request.form['age']
+            username = request.form.get('username')
+            age = request.form.get('age')
 
-            if username == "":
-                error = "vous n'avez pas mis votre username"
+            if username != None:
+                
+                if username == "":
+                    error = "vous n'avez pas mis votre username"
 
-            elif age == "":
-                error = "vous n'avez pas mis votre age"  
+                elif age == "":
+                    error = "vous n'avez pas mis votre age"  
 
-            else:
-                user.username = username
-                user.age = age
-                db.session.commit()
+                else:
+                    user.username = username
+                    user.age = age
+                    db.session.commit()
 
     elif id == userLog.id:            
         return redirect(url_for('main.profil', id=None))
@@ -119,24 +121,40 @@ def profil(id=None):
     else:
         url = URL_ROOT + 'api/post/user/' + str(id)
         user = User.query.filter_by(id=id).first()
+
+        follow = Follow.query.filter_by(follower_id=userLog.id, followby_id=id).first()
+        if not(follow):
+            follow = 1
+
+        if request.method == 'POST':
+
+            if follow == 1:
+                following = Follow(userLog, user)
+                db.session.add(following)
+
+            else:
+                db.session.delete(follow)
            
     following = Follow.query.filter_by(follower_id=user.id).count()
     followers = Follow.query.filter_by(followby_id=user.id).count()
     numberPosts = Post.query.filter_by(user_id=user.id).count()
     stats = {"followers": followers, "following": following, "posts": numberPosts}
 
-    follow = Follow.query.filter_by(follower_id=userLog.id, followby_id=id).first()
-    if not(follow):
-        follow = 1
+    
 
     if request.method == 'POST':
+        post = request.form.get('post')
+        if post != None:
+            postDelete = Post.query.filter_by(id=post).first()
+            print("AAAAAAAAAAAAAAAAAAA : " + str(postDelete.like_post))
+            for like in postDelete.like_post:
+                postDelete.like.remove(like)
+            commentDelete = Comment.query.filter_by(id=post).all()  
+            for comment in commentDelete:
+                db.session.delete(comment)
+           
+            db.session.delete(postDelete)
 
-        if follow == 1:
-            following = Follow(userLog, user)
-            db.session.add(following)
-
-        else:
-            db.session.delete(follow)
 
         db.session.commit()
         return redirect(url_for('main.profil', id=id))
