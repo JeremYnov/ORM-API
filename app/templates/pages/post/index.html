@@ -16,9 +16,27 @@
 </div>
 {% endif %}
 
-<button type="submit" class="add-talk-js">Nouveau post</button>
 
-{{posts}}
+<div class="container">
+    <button type="submit" class="add-talk-js">Nouveau post</button>
+    {% for result in posts.results %}
+    {% for post in result.post %}
+    <div class="card mb-3">
+        {% if post.image != None %}
+        <img src="{{ url_for('static',filename='uploads/' + post.user_id + '/post/' + post.id + '/' + post.image) }}"
+            class="card-img-top" alt="...">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.content }}</p>
+            <p class="card-text"><small class="text-muted">Poster par
+                    {{ result.user.username + ' le ' + post.publication_date }}</small></p>
+        </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+</div>
+
 
 <div class="popup">
     <div class="popup-content">
