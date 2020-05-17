@@ -4,15 +4,17 @@ from sqlalchemy import or_
 import datetime
 from datetime import timedelta
 import pymysql
-from operator import itemgetter
+from flask_login import current_user
 
 message = Blueprint('message', __name__, url_prefix='/')
 
 @message.route('/message')
 def list_message():
+    if not(current_user.is_authenticated):
+        return redirect(url_for('main.login'))
+    userLog = current_user
     # on recupere le user connecter
-    userLog = User.query.filter_by(id=1).first()
-    messages = db.session.query(Message).filter(or_(Message.send_by_id==1, Message.receive_by_id==1)).order_by(Message.set_date.desc()).all()
+    messages = db.session.query(Message).filter(or_(Message.send_by_id==userLog.id, Message.receive_by_id==userLog.id)).order_by(Message.set_date.desc()).all()
     listMessage = []
     statut = False
     for message in messages:
@@ -40,7 +42,9 @@ def list_message():
 
 @message.route('/talk/<int:id>', methods=['GET', 'POST'])
 def talk(id):
-    userLog = User.query.filter_by(id=1).first()
+    if not(current_user.is_authenticated):
+        return redirect(url_for('main.login'))
+    userLog = current_user
     messages = db.session.query(Message).filter(or_(Message.send_by_id==id, Message.receive_by_id==id)).filter(or_(Message.send_by_id==userLog.id, Message.receive_by_id==userLog.id)).order_by(Message.set_date).all()
     receiveUser = User.query.filter_by(id=id).first()
     error = None

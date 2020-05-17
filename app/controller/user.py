@@ -57,23 +57,20 @@ def createdb():
     return "la db a été créer"
 
 @main.route('/logout')
-# @login_required
 def logout():
     logout_user()
     return redirect(url_for('main.login'))
 
 @main.route('/login')
 def login():
-    userLog = current_user
-    if userLog:
+    if current_user.is_authenticated:
         return redirect(url_for('main.profil'))
     return render_template('pages/login.html')
 
 @main.route('/signup')
 def signup():  
-    userLog = current_user
-    if userLog:
-        return redirect(url_for('main.profil'))  
+    if current_user.is_authenticated:
+        return redirect(url_for('main.profil'))
     return render_template('pages/signup.html')
 
 @main.route('/signup', methods = ['POST'])
@@ -104,7 +101,6 @@ def signup_post():
 
 @main.route('/login', methods = ['POST'])
 def login_post():
-
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
@@ -125,13 +121,16 @@ def login_post():
 @main.route('/profil/<int:id>', methods=['GET', 'POST'], strict_slashes=False)
 @main.route('/profil/',  methods=['GET', 'POST'], strict_slashes=False)
 def profil(id=None):
+    if not(current_user.is_authenticated):
+        return redirect(url_for('main.login'))
+    userLog = current_user
     URL_ROOT = request.url_root
     error = None
 
     if(id == None):
         # user connecter
-        url = URL_ROOT + 'api/post/user/' + str(1)
-        user = User.query.filter_by(id=1).first()
+        url = URL_ROOT + 'api/post/user/' + str(userLog.id)
+        user = User.query.filter_by(id=userLog.id).first()
         if request.method == 'POST':
             username = request.form['username']
             age = request.form['age']
@@ -143,27 +142,23 @@ def profil(id=None):
                 user.username = username
                 user.age = age
                 db.session.commit()
-    # 1 est la personne connecter
-    elif id == 1:            
+    elif id == userLog.id:            
         return redirect(url_for('main.profil', id=None))
     else:
         url = URL_ROOT + 'api/post/user/' + str(id)
         user = User.query.filter_by(id=id).first()
-        # follower_id=1 etant la personne connecter
            
     following = Follow.query.filter_by(follower_id=user.id).count()
     followers = Follow.query.filter_by(followby_id=user.id).count()
     numberPosts = Post.query.filter_by(user_id=user.id).count()
     stats = {"followers": followers, "following": following, "posts": numberPosts}
 
-    follow = Follow.query.filter_by(follower_id=1, followby_id=id).first()
+    follow = Follow.query.filter_by(follower_id=userLog.id, followby_id=id).first()
     if not(follow):
         follow = 1
 
     if request.method == 'POST':
         if follow == 1:
-            # 1 personne connecter
-            userLog = User.query.filter_by(id=1).first()
             following = Follow(userLog, user)
             db.session.add(following)
         else:
@@ -181,10 +176,11 @@ def profil(id=None):
 @main.route('/profil/<int:id>/followers', methods=['GET', 'POST'], strict_slashes=False)
 @main.route('/profil/followers', methods=['GET', 'POST'], strict_slashes=False)
 def followers(id=None):
-    userLog = User.query.filter_by(id=1).first()
+    if not(current_user.is_authenticated):
+        return redirect(url_for('main.login'))
+    userLog = current_user
     button = []
     if id == None:
-        # personne connecter le 1
         followers = Follow.query.filter_by(follower_id=userLog.id).all()
 
         if request.method == 'POST':

@@ -35,7 +35,11 @@
 <img src="../../../static/img/{{user.results.avatar}}" alt="">
 
 <p>post : {{stats.posts}}</p>
+{% if id == None %}
 <button><a href="{{ url_for('main.followers', id=None ) }}">abonnements : {{stats.following}}</a></button>
+{% else %}
+<button><a href="{{ url_for('main.followers', id=id ) }}">abonnements : {{stats.following}}</a></button>  
+{% endif %}
 <p>abonné : {{stats.followers}}</p>
 
 <h1>post</h1>
