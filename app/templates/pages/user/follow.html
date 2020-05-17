@@ -4,30 +4,43 @@
 {% block body %}
 
 {% if followers == [] %}
+    {% if id == None %}
     <p>tu n'es abonné à personne</p>
-
+    {% else %}
+    <p>cette utilisateur n'est abonné à personne</p>
+    {% endif %}
 {% else %}
     
 {% for follower in followers %}
 <a href="{{ url_for('main.profil', id=follower.followby_id ) }}">
     <p>{{follower.followby.username}}</p>
-    <img height="50px" width="50px" src="<img src=../../../static/img/{{follower.followby.avatar}}" alt="">
+    <img height="50px" width="50px" src="../../../static/img/{{follower.followby.avatar}}" alt="">
 </a>
-<form action="" method="post">
-    <input type="hidden" name="follower" value="{{follower.followby_id}}">
+
     {% if id == None %}
-    <button type="submit">Se désabonner</button>
+    <form action="" method="post">
+        <input type="hidden" name="follower" value="{{follower.followby_id}}">
+        <button type="submit">Se désabonner</button>
+    </form>    
     {% endif %}
     {% if id != None %}
-        {% if follower.follower_id != userLog.id %}
-
-        {% if follower.followby_id != userLog.id %}
-        <button type="submit">S'abonné</button> 
-        {% endif %} 
-        {% endif %} 
+        {% for b in button %}
+            {% if (b.followBy == follower.followby_id) and (b.value == 0) %}
+            <form action="" method="post">
+                <input type="hidden" name="unfollowUser" value="{{follower.followby_id}}">
+                <button type="submit">Se désabonner</button>
+            </form>    
+            {% endif %}
+            {% if (b.followBy == follower.followby_id) and (b.value == 1) %}
+            <form action="" method="post">
+                <input type="hidden" name="followUser" value="{{follower.followby_id}}">
+                <button type="submit">S'abonné</button>
+            </form>
+            {% endif %}
+        {% endfor %}
     {% endif %}    
     
-</form>
+
 
 {% endfor %}
 {% endif %}
