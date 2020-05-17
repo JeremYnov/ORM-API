@@ -1,0 +1,128 @@
+.signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-form {
+    width: 50%;
+}
+
+.signup-title h1 {
+    color: #66FCF1;
+    text-transform: uppercase;
+    font-size: 4em;
+    text-align: center;
+}
+
+.signup-title h1 span {
+    display: block;
+    color: #66FCF1;
+    font-size: 0.4em;
+}
+.signup-form form{
+    text-align: center;
+}
+
+
+.form-grid {
+    display: grid;
+}
+
+.grid80-20 {
+    grid-template-columns: 3fr 1fr;
+}
+
+.grid50-50 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.submit-button{
+    border: 2px solid #66FCF1;
+    background-color: transparent;
+    padding: 17px 50px ;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #9b9b9b;
+    margin-top: 50px;
+    transition: 0.6s;
+}
+
+.submit-button:hover{
+    border: 2px solid #66FCF1;
+    background-color: #66FCF1;
+    color: black;
+    padding: 17px 50px ;
+}
+
+
+
+
+
+
+.form__group {
+    position: relative;
+    padding: 15px 30px 15px 0;
+    margin-top: 10px;
+    /* width: 50%; */
+}
+
+.form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid #9b9b9b;
+    outline: 0;
+    font-size: 1.3rem;
+    color: #fff;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+/* .form__field::placeholder {
+    color: transparent;
+} */
+
+/* .form__field:placeholder-shown~.form__label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+} */
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #9b9b9b;
+}
+
+.form__field:focus {
+
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #45A29E, #66FCF1);
+    border-image-slice: 1;
+}
+
+.form__field:focus~.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #11998e;
+    font-weight: 700;
+}
+
+/* reset input */
+.form__field:required {
+    box-shadow: none;
+}
+
+.form__field:invalid {
+    box-shadow: none;
+}
