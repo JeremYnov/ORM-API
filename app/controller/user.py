@@ -169,6 +169,7 @@ def profil(id=None):
 @main.route('/profil/followers', methods=['GET', 'POST'], strict_slashes=False)
 def followers(id=None):
     userLog = User.query.filter_by(id=1).first()
+    button = []
     if id == None:
         # personne connecter le 1
         followers = Follow.query.filter_by(follower_id=userLog.id).all()
@@ -181,8 +182,35 @@ def followers(id=None):
             return redirect(url_for('main.followers', id=None))
     else: 
         user = User.query.filter_by(id=id).first()
-        followers = Follow.query.filter_by(follower_id=user.id).all()       
+        followers = Follow.query.filter_by(follower_id=user.id).all()      
+        followerUserLog = Follow.query.filter_by(follower_id=userLog.id).all() 
+    
+        for follower in followers:
+            status = False
+            if follower.followby_id == userLog.id:
+                    button.append({'followBy': follower.followby_id, 'value': 2})
+                    status = True
+            for followerUser in followerUserLog:
+                if follower.followby_id == followerUser.followby_id and status == False:
+                    button.append({'followBy': follower.followby_id, 'value': 0})
+                    status = True
+            if status == False:
+                button.append({'followBy': follower.followby_id, 'value': 1})
+            
+        if request.method == 'POST':  
+            unfollowUser = request.form.get('unfollowUser')  
+            followUser = request.form.get('followUser') 
+
+            if unfollowUser != None:
+                userLogUnFollow = Follow.query.filter_by(follower_id=userLog.id, followby_id=unfollowUser).first()
+                db.session.delete(userLogUnFollow)
+            else:
+                userFollow = User.query.filter_by(id=followUser).first()
+                following = Follow(userLog, userFollow)
+                db.session.add(following)
+            db.session.commit()
+            return redirect(url_for('main.followers', id=id))    
 
 
-    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog)
+    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button)
 
