@@ -8,11 +8,6 @@ app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config.from_object(config.Config)
 
-app.register_blueprint(user.main)
-app.register_blueprint(post.post)
-app.register_blueprint(message.message)
-app.register_blueprint(fixtures.fixtures)
-
 db.init_app(app)
 
 
@@ -28,3 +23,9 @@ def load_user(id):
     return User.query.get(int(id))
 
 # with app.app_context():
+
+
+app.register_blueprint(user.main)
+app.register_blueprint(post.post)
+app.register_blueprint(message.message)
+app.register_blueprint(fixtures.fixtures)

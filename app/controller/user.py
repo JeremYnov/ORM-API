@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.models import db, User, Post, Comment, Message, Follow
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, current_user, logout_user
 import requests
 
 main = Blueprint('main', __name__, url_prefix='/')
@@ -56,12 +56,24 @@ def createdb():
     db.create_all()
     return "la db a été créer"
 
+@main.route('/logout')
+# @login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.login'))
+
 @main.route('/login')
 def login():
+    userLog = current_user
+    if userLog:
+        return redirect(url_for('main.profil'))
     return render_template('pages/login.html')
 
 @main.route('/signup')
-def signup():    
+def signup():  
+    userLog = current_user
+    if userLog:
+        return redirect(url_for('main.profil'))  
     return render_template('pages/signup.html')
 
 @main.route('/signup', methods = ['POST'])
@@ -90,9 +102,9 @@ def signup_post():
 
     return redirect(url_for('main.login'))
 
-
 @main.route('/login', methods = ['POST'])
 def login_post():
+
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
@@ -107,6 +119,7 @@ def login_post():
     login_user(user, remember=remember)
 
     return redirect(url_for('main.profil'))
+
 
 
 @main.route('/profil/<int:id>', methods=['GET', 'POST'], strict_slashes=False)
