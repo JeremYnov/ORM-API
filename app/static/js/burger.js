@@ -57,6 +57,8 @@ function resize() {
     valueForm = screenHeight - headerHeight;
     if ($('.wrapper').innerHeight() < valueForm) {
         $('.wrapper').css('height', valueForm);
+    }else{
+        $('.wrapper').css('height', 'auto');
     }
     
 }
