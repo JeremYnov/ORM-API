@@ -13,7 +13,7 @@
 {% if id == None %}
 
 <button type="submit" class="add-talk-js">modifier Profil</button>
-{# <button><a href="{{url_for('post.newPost')}}">creer un nouveau post</a></button> #}
+<button><a href="{{url_for('post.index')}}">creer un nouveau post</a></button>
 
 {% else %}
 
@@ -37,10 +37,13 @@
 <p>post : {{stats.posts}}</p>
 {% if id == None %}
 <button><a href="{{ url_for('main.followers', id=None ) }}">abonnements : {{stats.following}}</a></button>
+<button><a href="{{ url_for('main.following', id=None ) }}">abonné : {{stats.followers}}</a></button>
 {% else %}
 <button><a href="{{ url_for('main.followers', id=id ) }}">abonnements : {{stats.following}}</a></button>  
+<button><a href="{{ url_for('main.following', id=id ) }}">abonné : {{stats.followers}}</a></button>
 {% endif %}
-<p>abonné : {{stats.followers}}</p>
+
+
 
 <h1>post</h1>
 
