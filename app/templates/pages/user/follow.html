@@ -3,6 +3,14 @@
 
 {% block body %}
 
+{% if id == None %}
+<button><a href="{{ url_for('main.followers', id=None ) }}">abonnement</a></button>
+<button><a href="{{ url_for('main.following', id=None ) }}">abonné</a></button>
+{% else %}
+<button><a href="{{ url_for('main.followers', id=id ) }}">abonnement</a></button>
+<button><a href="{{ url_for('main.following', id=id ) }}">abonné</a></button>   
+{% endif %}
+
 {% if followers == [] %}
     {% if id == None %}
     <p>tu n'es abonné à personne</p>
