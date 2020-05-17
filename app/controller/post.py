@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, jsonify, request, url_for, redirect
-from app.models import db, User, Post, Comment, Follow
+import os
 import requests
 import json
+
+from flask import Blueprint, render_template, jsonify, request, url_for, redirect
+from app.models import db, User, Post, Comment, Follow
 from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
-import os
 
 
 post = Blueprint('post', __name__, url_prefix='/')
@@ -16,7 +17,7 @@ def index():
 
     user = User.query.get(id)
 
-    url = URL_ROOT + 'api/post/' + str(id)
+    url = request.url_root + 'api/post/' + str(id)
 
     response = requests.get(url)
     posts = response.json()
@@ -27,102 +28,12 @@ def index():
         content = request.form['content']
         image = request.files['image']
 
-        if title or content:
-            now = datetime.utcnow() + timedelta(hours=2)
+        resp = newPost(user, title, content, image, posts)
 
-            if image:
-                if allowed_image(image.filename):
-                    if image.mimetype == 'image/png':
-                        post = Post(title, content,
-                                    image.filename, now, now, user)
-
-                        db.session.add(post)
-                        db.session.commit()
-
-                        filename = secure_filename(image.filename)
-                        uploads_dir = 'uploads/' + \
-                            str(user.id) + '/posts/' + str(post.id) + '/'
-
-                        os.makedirs(uploads_dir, exist_ok=True)
-                        image.save(os.path.join(uploads_dir, filename))
-
-                    else:
-                        error = True
-                        message = "c pas une image"
-                        return render_template('pages/post/index.html', posts=posts, error=error, message=message)
-                else:
-                    error = True
-                    message = "c pas une image"
-                    return render_template('pages/post/index.html', posts=posts, error=error, message=message)
-
-            else:
-                post = Post(title, content, None, now, now, user)
-
-            db.session.add(post)
-            db.session.commit()
-
-        else:
-            error = True
-            message = "il manque le titre ou le contenue"
-            return render_template('pages/post/index.html', posts=posts, error=error, message=message)
-
-        error = False
-        message = "le post a bien été posté"
-
-        return render_template('pages/post/index.html', posts=posts, error=error, message=message)
+        return render_template('pages/post/index.html', posts=posts,
+                               error=resp['error'], message=resp['message'])
 
     return render_template('pages/post/index.html', posts=posts)
-
-
-# @ post.route('/add/new/post', methods=['POST'])
-# def newPost():
-#     id = 1
-#     user = User.query.get(id)
-
-#     if request.method == 'POST':
-#         print(request.form['title'])
-#         print(request.form['content'])
-#         print(request.files['image'])
-#         print(request.files['image'].mimetype)
-#         print(request.files['image'].content_type)
-
-#         title = request.form['title']
-#         content = request.form['content']
-#         image = request.files['image']
-
-#         if title or content:
-#             now = datetime.utcnow() + timedelta(hours=2)
-
-#             if image:
-#                 if allowed_image(image.filename):
-#                     if image.mimetype == 'image/png':
-
-#                         post = Post(title, content,
-#                                     image.filename, now, now, user)
-#                     else:
-#                         error = True
-#                         message = "c pas une image"
-#                         return jsonify(error=error, message=message)
-#                 else:
-#                     error = True
-#                     message = "c pas une image"
-#                     return jsonify(error=error, message=message)
-
-#             else:
-#                 post = Post(title, content, None, now, now, user)
-
-#             db.session.add(post)
-#             db.session.commit()
-
-#         else:
-#             error = True
-#             message = "il manque le titre ou le contenue"
-#             return jsonify(error=error, message=message)
-
-#         error = False
-#         message = "le post a bien été posté"
-
-#     return jsonify(error=error, message=message)
 
 
 @post.route('/api/post/<int:id>', methods=['GET'])
@@ -246,3 +157,55 @@ def allowed_image(filename):
         return True
     else:
         return False
+
+
+def newPost(user, title, content, image, posts):
+    if title or content:
+        now = datetime.utcnow() + timedelta(hours=2)
+
+        if image:
+            if allowed_image(image.filename):
+                if image.mimetype == 'image/png' or image.mimetype == 'image/jpg' or image.mimetype == 'image/jpeg':
+                    post = Post(title, content,
+                                image.filename, now, now, user)
+
+                    db.session.add(post)
+                    db.session.commit()
+
+                    filename = secure_filename(image.filename)
+                    uploads_dir = 'uploads/' + \
+                        str(user.id) + '/posts/' + str(post.id) + '/'
+
+                    os.makedirs(uploads_dir, exist_ok=True)
+                    image.save(os.path.join(uploads_dir, filename))
+
+                    error = False
+                    message = "le post a bien été posté"
+
+                else:
+                    error = True
+                    message = "c pas une image"
+
+            else:
+                error = True
+                message = "c pas une image"
+
+        else:
+            post = Post(title, content, None, now, now, user)
+
+            db.session.add(post)
+            db.session.commit()
+
+            error = False
+            message = "le post a bien été posté"
+
+    else:
+        error = True
+        message = "il manque le titre ou le contenue"
+
+    response = {
+        'error': error,
+        'message': message
+    }
+
+    return response
