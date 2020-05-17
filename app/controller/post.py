@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, jsonify, request, url_for, redirec
 from app.models import db, User, Post, Comment, Follow
 from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
+from flask_login import current_user
 
 
 post = Blueprint('post', __name__, url_prefix='/')
@@ -13,25 +14,55 @@ post = Blueprint('post', __name__, url_prefix='/')
 
 @post.route('/', methods=['GET',  'POST'])
 def index():
-    id = 4
+    if not(current_user.is_authenticated):
+        return redirect(url_for('main.login'))
 
-    user = User.query.get(id)
-
-    url = request.url_root + 'api/post/' + str(id)
+    user = current_user
+    url = request.url_root + 'api/post/' + str(user.id)
 
     response = requests.get(url)
     posts = response.json()
 
     if request.method == 'POST':
+        if request.form['type'] == 'newPost':
 
-        title = request.form['title']
-        content = request.form['content']
-        image = request.files['image']
+            title = request.form['title']
+            content = request.form['content']
+            image = request.files['image']
 
-        resp = newPost(user, title, content, image, posts)
+            resp = newPost(user, title, content, image, posts)
 
-        return render_template('pages/post/index.html', posts=posts,
-                               error=resp['error'], message=resp['message'])
+            response = requests.get(url)
+            posts = response.json()
+
+            return render_template('pages/post/index.html', posts=posts,
+                                   error=resp['error'], message=resp['message'])
+
+        elif request.form['type'] == 'newComment':
+
+            comment = request.form['comment']
+            postId = request.form['postId']
+
+            resp = newComment(user, comment, postId)
+
+            response = requests.get(url)
+            posts = response.json()
+
+            return render_template('pages/post/index.html', posts=posts,
+                                   error=resp['error'], message=resp['message'])
+
+        elif request.form['type'] == 'like':
+
+            like = request.form['like']
+            postId = request.form['postId']
+
+            resp = newlike(user, postId, like)
+
+            response = requests.get(url)
+            posts = response.json()
+
+            return render_template('pages/post/index.html', posts=posts,
+                                   error=resp['error'], message=resp['message'])
 
     return render_template('pages/post/index.html', posts=posts)
     # return jsonify(posts)
@@ -65,7 +96,7 @@ def createApiPostFollowBy(id):
                             'user': {
                                 'id': str(comment.user.id),
                                 'username': comment.user.username,
-                                'avatar': comment.user.avatar
+                                'avatar': str(comment.user.avatar)
                             },
                             'content': comment.content,
                             'publication_date': comment.publication_date
@@ -177,8 +208,58 @@ def allowed_image(filename):
         return False
 
 
+def newlike(user, postId, like):
+    if postId and like:
+
+        if like == 'like':
+
+            post = Post.query.get(int(postId))
+
+            user.like.append(post)
+            db.session.commit()
+
+            error = False
+            message = "like"
+
+    else:
+        error = True
+        message = "pas like"
+
+    response = {
+        'error': error,
+        'message': message
+    }
+
+    return response
+
+
+def newComment(user, content, postId):
+    if postId and content:
+        post = Post.query.get(int(postId))
+        now = datetime.now()
+
+        comment = Comment(user, post, content, now)
+
+        db.session.add(comment)
+        db.session.commit()
+
+        error = False
+        message = "le commentaire a bien été posté"
+
+    else:
+        error = True
+        message = "le commentaire n'a pas été posté"
+
+    response = {
+        'error': error,
+        'message': message
+    }
+
+    return response
+
+
 def newPost(user, title, content, image, posts):
-    if title or content:
+    if title and content:
         now = datetime.utcnow() + timedelta(hours=2)
 
         if image:
