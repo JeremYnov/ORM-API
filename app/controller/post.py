@@ -13,7 +13,7 @@ post = Blueprint('post', __name__, url_prefix='/')
 
 @post.route('/', methods=['GET',  'POST'])
 def index():
-    id = 3
+    id = 4
 
     user = User.query.get(id)
 
@@ -34,6 +34,7 @@ def index():
                                error=resp['error'], message=resp['message'])
 
     return render_template('pages/post/index.html', posts=posts)
+    # return jsonify(posts)
 
 
 @post.route('/api/post/<int:id>', methods=['GET'])
@@ -47,40 +48,57 @@ def createApiPostFollowBy(id):
                 'message': "l'utilisateur n'a pas de follower avec des posts"
             })
         else:
-            array = []
+            results = {}
+            arrayPost = []
 
             for follow in follows:
-                arrayPost = []
 
                 for post in follow.follower.post:
+                    arrayComment = []
+
+                    comments = Comment.query.filter_by(
+                        post_id=post.id).order_by(Comment.publication_date.desc()).all()
+
+                    for comment in comments:
+                        arrayComment.append({
+                            'post_id': str(comment.post_id),
+                            'user': {
+                                'id': str(comment.user.id),
+                                'username': comment.user.username,
+                                'avatar': comment.user.avatar
+                            },
+                            'content': comment.content,
+                            'publication_date': comment.publication_date
+                        })
+
                     arrayPost.append(
                         {
-                            'id': post.id,
+                            'id': str(post.id),
                             'title': post.title,
                             'content': post.content,
                             'image': post.image,
                             'publication_date': post.publication_date,
                             'modification_date': post.modification_date,
-                            'user_id': post.user_id,
-                            'likes': len(post.like_post)
+                            'user': {
+                                'id': str(follow.follower.id),
+                                'username': follow.follower.username
+                            },
+                            'likes': str(len(post.like_post)),
+                            'comments': arrayComment
                         }
                     )
 
-                array.append({
-                    'user': {
-                        'id': follow.followby.id,
-                        'username': follow.followby.username
-                    },
-                    'post': arrayPost,
-                })
+                results = {
+                    'posts': arrayPost
+                }
 
             success = True
             message = "Tout fonctionne bien"
 
         api = jsonify(message=message,
                       success=success,
-                      count=len(array),
-                      results=array
+                      count=len(arrayPost),
+                      results=results
                       )
 
     except Exception as e:
@@ -173,7 +191,7 @@ def newPost(user, title, content, image, posts):
                     db.session.commit()
 
                     filename = secure_filename(image.filename)
-                    uploads_dir = 'uploads/' + \
+                    uploads_dir = 'app/static/uploads/' + \
                         str(user.id) + '/posts/' + str(post.id) + '/'
 
                     os.makedirs(uploads_dir, exist_ok=True)

@@ -12,7 +12,7 @@ like = db.Table('like',
                 )
 
 
-class User(UserMixin,db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -79,6 +79,7 @@ class Comment(db.Model):
     content = db.Column(db.String(50))
     publication_date = db.Column(db.DateTime)
     post = db.relationship("Post")
+    user = db.relationship("User")
 
 
 class Message(db.Model):

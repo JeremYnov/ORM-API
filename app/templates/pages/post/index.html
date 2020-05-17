@@ -7,33 +7,59 @@
 {% block body %}
 
 {% if error == True %}
-<div class="error">
-    <p>{{message}}</p>
+<div class="container">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error </strong>{{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 </div>
 {% elif error == False %}
-<div class="success">
-    <p>{{message}}</p>
+<div class="container">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success </strong>{{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 </div>
 {% endif %}
 
-
 <div class="container">
     <button type="submit" class="add-talk-js">Nouveau post</button>
-    {% for result in posts.results %}
-    {% for post in result.post %}
+    {% for post in posts.results.posts %}
     <div class="card mb-3">
         {% if post.image != None %}
-        <img src="{{ url_for('static',filename='uploads/' + post.user_id + '/post/' + post.id + '/' + post.image) }}"
+        <img src="{{ url_for('static', filename='uploads/' + post.user.id + '/posts/' + post.id + '/' + post.image) }}"
             class="card-img-top" alt="...">
         {% endif %}
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <p class="card-text">{{ post.content }}</p>
             <p class="card-text"><small class="text-muted">Poster par
-                    {{ result.user.username + ' le ' + post.publication_date }}</small></p>
+                    {{ post.user.username + ' le ' + post.publication_date }}</small></p>
         </div>
+        {% for comment in post.comments %}
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="{{ url_for('static', filename='uploads/' + comment.user.id + '/avatar/' + comment.user.avatar) }}"
+                        class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ comment.user.username }}</h5>
+                        <p class="card-text">{{ comment.content }}</p>
+                        <p class="card-text"><small class="text-muted">Poster par
+                                {{ comment.user.username + ' le ' + comment.publication_date }}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
     </div>
-    {% endfor %}
     {% endfor %}
 </div>
 
