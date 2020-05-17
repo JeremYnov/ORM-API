@@ -1,23 +1,55 @@
 {% extends "base.html" %}
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/login.css') }}">
+{% endblock %}
 {% block body %}
-<h1>Connexion</h1>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
 
-<form action="/login" method="POST">
-    <input type="email" name="email">
-    <input type="password" name="password">
-    <label class="checkbox">
-        <input type="checkbox" name="remember">
-        Remember me
-    </label>
-    <input type="submit">
-</form>
+<section class="login">
+    <div class="login-form">
+        <div class="login-title">
+            <h1>Connexion</h1>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form action="/login" method="POST">
+            <div class="form__group field">
+                <input type="mail" class="form__field" name="email" required />
+                <label for="email" class="form__label">Adresse mail</label>
+            </div>
+            <!-- <input type="email" name="email"> -->
+            <div class="form__group field">
+                <input type="password" class="form__field" name="password" required />
+                <label for="password" class="form__label">Mot de passe</label>
+            </div>
+            <!-- <input type="password" name="password"> -->
+            <div class="no-account">
+                <a href="">Vous n'avez pas de compte ? Créer un compte </a>
+            </div>
+
+            <div class="form__group field">
+                <label class="checkbox">
+                    <input type="checkbox" name="remember">
+                    Remember me
+                </label>
+                
+            </div>
+            
+            <input type="submit" class="submit-button">
+        </form>
+
+    </div>
+</section>
+
+
+
+
 {% endblock body %}
