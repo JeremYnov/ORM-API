@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user
 import requests
 
-
 main = Blueprint('main', __name__, url_prefix='/')
 
 @main.route('/zeaafae')
@@ -94,20 +93,20 @@ def signup_post():
 
 @main.route('/login', methods = ['POST'])
 def login_post():
-    
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
-
+    
     user = User.query.filter_by(mail=email).first()
+    print(user)
 
     if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
-        return redirect(url_for('auth.login'))
+        flash('Vérifiez vos informations de connexion et reéssayez')
+        return redirect(url_for('main.login'))
 
     login_user(user, remember=remember)
 
-    return redirect(url_for('main.profile'))
+    return redirect(url_for('main.profil'))
 
 
 @main.route('/profil/<int:id>', methods=['GET', 'POST'], strict_slashes=False)

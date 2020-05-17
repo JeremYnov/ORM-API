@@ -10,11 +10,12 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-<form action="">
+
+<form action="/login" method="POST">
     <input type="email" name="email">
     <input type="password" name="password">
     <label class="checkbox">
-        <input type="checkbox">
+        <input type="checkbox" name="remember">
         Remember me
     </label>
     <input type="submit">
