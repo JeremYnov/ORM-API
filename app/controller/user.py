@@ -148,7 +148,7 @@ def profil(id=None):
             postDelete = Post.query.filter_by(id=post).first()
             print("AAAAAAAAAAAAAAAAAAA : " + str(postDelete.like_post))
             for like in postDelete.like_post:
-                postDelete.like.remove(like)
+                like.like.remove(like)
             commentDelete = Comment.query.filter_by(id=post).all()  
             for comment in commentDelete:
                 db.session.delete(comment)
