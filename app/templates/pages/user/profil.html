@@ -19,9 +19,15 @@
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 bg-dark">
                 <div class="media align-items-end profile-header">
-                    <div class="profile mr-3"><img
-                            src="/static/uploads/{{user.results.id}}/avatar/{{user.results.avatar}}" alt="..."
+                    <div class="profile mr-3">
+                        {% if user.results.avatar != None %}
+                        <img src="/static/uploads/{{user.results.id}}/avatar/{{user.results.avatar}}" alt="..."
                             width="130" class="rounded mb-2 img-thumbnail">
+                        {% else %}
+                        <img src="/static/uploads/{{user.results.id}}/avatar/default.png" alt="..." width="130"
+                            class="rounded mb-2 img-thumbnail">
+                        {% endif %}
+
                         {% if id == None %}
                         <button type="submit" class="btn btn-dark btn-sm btn-block add-talk-js">Modifier le
                             profil</button>
