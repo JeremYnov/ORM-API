@@ -69,7 +69,7 @@
                 <p class="card-text"><small class="text-muted">Poster par
                         {{ user.results.username + ' le ' + post.publication_date }}</small></p>
                 <div class="d-flex">
-                    <form action="" method="post">
+                    <form action="{{ url_for('post.index') }}" method="post">
                         <input type="hidden" name="postId" value="{{ post.id }}">
                         <input type="hidden" name="type" value="like">
                         <button type="submit" name="like" value="like">like</button>
