@@ -17,7 +17,12 @@
             <li class="nav-item"><a href="{{ url_for('post.index') }}">Home</a></li>
             <li class="nav-item"><a href="{{ url_for('message.list_message') }}">Message</a></li>
             <li class="nav-item"><a href="{{ url_for('main.profil') }}">Profil</a></li>
-
+            {% if currentUser.id %}
+            <li class="nav-item"><a href="{{ url_for('main.logout') }}">Deconnexion</a></li>
+            {% else %}
+            <li class="nav-item"><a href="{{ url_for('main.login') }}">Connexion</a></li>
+            <li class="nav-item"><a href="{{ url_for('main.signup') }}">Inscription</a></li>
+            {% endif %}
             <div class="form__group__nav field">
                 <input type="text" class="form__field__nav search_profil-js" name="search" placeholder="Rechercher.." />
                 <!-- <label for="search" class="form__label">Rechercher</label> -->

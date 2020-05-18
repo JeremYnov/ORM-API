@@ -38,7 +38,7 @@ def list_message():
     # messageUser = sorted(listMessage, key=itemgetter(0))    
                 
 
-    return render_template('pages/message/listMessage.html', listMessage=listMessage, userLog=userLog)
+    return render_template('pages/message/listMessage.html', listMessage=listMessage, userLog=userLog, currentUser=current_user)
 
 @message.route('/talk/<int:id>', methods=['GET', 'POST'])
 def talk(id):
@@ -71,7 +71,7 @@ def talk(id):
     
 
 
-    return render_template('pages/message/talk.html', messages=messages, userLog=userLog, id=id, error=error, receiveUser=receiveUser, follow=follow)    
+    return render_template('pages/message/talk.html', messages=messages, userLog=userLog, id=id, error=error, receiveUser=receiveUser, follow=follow, currentUser=current_user)    
 
 
 
