@@ -1,19 +1,18 @@
 {% extends "base.html" %}
 {% block title %}messages{% endblock %}
-
-{% block body %}
-
 {% block link %}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">
 <link rel="stylesheet" href="{{ url_for('static',filename='css/message.css') }}">
 {% endblock %}
-
+{% block body %}
 <button type="submit" class="add-talk-js">Nouveau message</button>
 
 <div class="center">
     <div class="contacts">
         <div class="contact-bar">
-            <div class="name"> <h2>Vos conversations</h2></div>
+            <div class="name">
+                <h2>Vos conversations</h2>
+            </div>
         </div>
         <div class="list-message">
             {% for message in listMessage %}
@@ -45,33 +44,33 @@
 
 
         <!-- <div class="contact">
-            <div class="pic">
-                <div class="stark"></div>
+                <div class="pic">
+                    <div class="stark"></div>
+                </div>
+                <div class="name">Tony Stark</div>
+                <div class="message">Uh, he's from space, he came here to steal a necklace from a wizard.</div>
             </div>
-            <div class="name">Tony Stark</div>
-            <div class="message">Uh, he's from space, he came here to steal a necklace from a wizard.</div>
-        </div>
-        <div class="contact">
-            <div class="pic">
-                <div class="banner"></div>
+            <div class="contact">
+                <div class="pic">
+                    <div class="banner"></div>
+                </div>
+                <div class="name">Bruce Banner</div>
+                <div class="message">Uh, he's from space, he came here to steal a necklace from a wizard.</div>
             </div>
-            <div class="name">Bruce Banner</div>
-            <div class="message">Uh, he's from space, he came here to steal a necklace from a wizard.</div>
-        </div>
-        <div class="contact">
-            <div class="pic">
-                <div class="thor"></div>
+            <div class="contact">
+                <div class="pic">
+                    <div class="thor"></div>
+                </div>
+                <div class="name">Thor Odinson</div>
+                <div class="message">I like this one</div>
             </div>
-            <div class="name">Thor Odinson</div>
-            <div class="message">I like this one</div>
-        </div>
-        <div class="contact">
-            <div class="pic">
-                <div class="danvers"></div>
-            </div>
-            <div class="name">Carol Danvers</div>
-            <div class="message">Hey Peter Parker, you got something for me</div>
-        </div> -->
+            <div class="contact">
+                <div class="pic">
+                    <div class="danvers"></div>
+                </div>
+                <div class="name">Carol Danvers</div>
+                <div class="message">Hey Peter Parker, you got something for me</div>
+            </div> -->
     </div>
 </div>
 
@@ -79,11 +78,17 @@
 
 <div class="popup">
     <div class="popup-content">
-        <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
-        <input type="text" class="search_bar-js" placeholder="recherche..">
+        <div class="form__group field">
+            <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
+            <input type="text" class="search_bar-js form__field search_profil-js" placeholder="Rechercher.." />
+            <!-- <label for="search" class="form__label">Rechercher</label> -->
+        </div>
+
+        <!-- <input type="text" class="search_bar-js" placeholder="recherche.."> -->
         <div class="result_user_js"></div>
     </div>
 </div>
+
 
 {% block js %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

@@ -11,7 +11,7 @@
 <a href="{{url_for('message.list_message')}}" class="btn btn-secondary">
     <i class="fas fa-chevron-left"></i> Revenir au messages</a>
 <div class="center">
-    
+
     <div class="chat">
 
         <div class="contact bar">
@@ -34,13 +34,13 @@
             <div class="name">{{receiveUser.username}}</div>
             {% if follow != None %}
             <form action="" method="post">
-            <input type="hidden" name="unfollow" value="{{receiveUser.id}}">
-            <button type="submit">Se désabonné</button>
+                <input type="hidden" name="unfollow" value="{{receiveUser.id}}">
+                <button type="submit">Se désabonner</button>
             </form>
             {% else %}
             <form action="" method="post">
-            <input type="hidden" name="follow" value="{{receiveUser.id}}">
-            <button type="submit">S'abonné</button>
+                <input type="hidden" name="follow" value="{{receiveUser.id}}">
+                <button type="submit">S'abonner</button>
             </form>
             {% endif %}
         </div>

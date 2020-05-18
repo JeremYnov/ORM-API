@@ -1,0 +1,16 @@
+.profile-header{
+    transform: translateY(2.4rem);
+}
+
+
+.media-body h4{
+    color: white;
+}
+
+.media-body .profil-age{
+    color: white;
+}
+
+.button-profil-wrapper{
+    display: flex;
+}

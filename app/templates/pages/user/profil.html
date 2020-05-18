@@ -2,108 +2,232 @@
 {% block title %}Profil - {{user.results.username}}{% endblock %}
 
 {% block link %}
-<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/profil.css') }}">
+{% endblock %}
 {% block body %}
 
 {% if error != None %}
 <p>{{error}}</p>
 {% endif %}
 
-<div class="container">
-    <h1>profil</h1>
 
-    {% if id == None %}
+<div class="py-5">
+    <div class="col-xl-4 col-md-6 col-sm-10 mx-auto">
 
-    <button type="submit" class="add-talk-js">Modifier Profil</button>
-    <button><a href="{{url_for('post.index')}}">Créer un nouveau post</a></button>
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 bg-dark">
+                <div class="media align-items-end profile-header">
+                    <div class="profile mr-3"><img
+                            src="../../../static/img/{{user.results.avatar}}" alt="..."
+                            width="130" class="rounded mb-2 img-thumbnail">
+                        {% if id == None %}
+                        <button type="submit" class="btn btn-dark btn-sm btn-block add-talk-js">Modifier le
+                            profil</button>
+                        {% else %}
 
-    {% else %}
+                        <button><a href="{{url_for('message.talk', id=user.results.id)}}">Écrire un message</a></button>
 
-    <button><a href="{{url_for('message.talk', id=user.results.id)}}">Écrire un message</a></button>
+                        <form action="" method="post">
+                            {% if follow == 1 %}
+                            <button type="submit" name="followUser" class="btn btn-dark btn-sm btn-block">S'abonner</button>
+                            {% else %}
+                            <button type="submit" name="unfollowUser" class="btn btn-dark btn-sm btn-block">Se désabonner</button>
+                            {% endif %}
+                        </form>
+                        {% endif %}
 
-    <form action="" method="post">
-        {% if follow == 1 %}
-        <button type="submit" name="followUser">S'abonner</button>
+                    </div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0">{{user.results.username}}</h4>
+                        <p class="small mb-4 profil-age"> {{user.results.age}} ans</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light pt-5 p-4  d-flex justify-content-end text-center">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{stats.posts}}</h5><small class="text-muted"> <i
+                                class="far fa-newspaper mr-1"></i>Posts</small>
+                    </li>
+
+                    {% if id == None %}
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block"><a
+                                href="{{ url_for('main.followers', id=None ) }}">{{stats.following}}</a></h5><small
+                            class="text-muted"> <i class="fa fa-user-circle-o mr-1"></i>Abonnements</small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block"><a
+                                href="{{ url_for('main.following', id=id ) }}">{{stats.followers}}</a></h5><small
+                            class="text-muted"> <i class="fa fa-user-circle-o mr-1"></i>Abonnés</small>
+                    </li>
+                    {% else %}
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block"><a
+                                href="{{ url_for('main.followers', id=id ) }}">{{stats.following}}</a></h5><small
+                            class="text-muted"> <i class="fa fa-user-circle-o mr-1"></i>Abonnements</small>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="{{ url_for('main.following', id=id ) }}">
+                            <h5 class="font-weight-bold mb-0 d-block">{{stats.followers}}</h5><small class="text-muted">
+                                <i class="fa fa-user-circle-o mr-1"></i>Abonnés</small>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+            <div class="py-4 px-4">
+                <div class="py-4">
+                    <h5 class="mb-3">Posts récents</h5>
+                    {% for post in user.results.posts %}
+                    <div>
+                        <div class="mb-3">
+                            <form action="" method="post">
+                                <input type="hidden" name="post" value="{{post.id}}">
+                                <button>Suprimer(X)</button>
+                            </form>
+                        </div>
+                        <div class="p-4 bg-light rounded shadow-sm">
+                            <h5 class="mb-3">{{ post.title }}s</h5>
+                            <p class="font-italic mb-0">{{ post.content }}</p>
+                            <ul class="list-inline small text-muted mt-3 mb-0">
+
+                                <li class="list-inline-item"><i class="fa fa-heart-o mr-2"></i>{{ post.like }} Likes
+                                </li>
+                                <li class="list-inline-item"><i class="fa fa-comment-o mr-2"></i>12 Comments</li>
+
+                            </ul>
+                        </div>
+                        <div class="card mb-3">
+                            {% if post.image != None %}
+                            <img src="/static/uploads/{{post.user_id}}/posts/{{post.id}}/{{post.image}}"
+                                class="card-img-top" alt="..." height="350">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text">{{ post.content }}</p>
+                                <p class="card-text">{{ post.like }}</p>
+                                <p class="card-text"><small class="text-muted">Poster par
+                                        {{ user.results.username + ' le ' + post.publication_date }}</small></p>
+                                <div class="d-flex">
+                                    <form action="{{ url_for('post.index') }}" method="post">
+                                        <input type="hidden" name="postId" value="{{ post.id }}">
+                                        <input type="hidden" name="type" value="like">
+                                        <button type="submit" name="like" value="like">like</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div><!-- End profile widget -->
+
+        </div>
+    </div>
+
+    <!-- <div class="container">
+        <h1>profil</h1>
+
+        {% if id == None %}
+
+        <button type="submit" class="add-talk-js">Modifier Profil</button>
+        <button><a href="{{url_for('post.index')}}">Créer un nouveau post</a></button>
+
         {% else %}
-        <button type="submit" name="unfollowUser">Se désabonner</button>
-        {% endif %}
-    </form>
-    {% endif %}
+
+        <button><a href="{{url_for('message.talk', id=user.results.id)}}">Écrire un message</a></button>
+
+        <form action="" method="post">
+            {% if follow == 1 %}
+            <button type="submit" name="followUser">S'abonner</button>
+            {% else %}
+            <button type="submit" name="unfollowUser">Se désabonner</button>
+            {% endif %}
+        </form>
+        {% endif %} -->
 
 
-    <p>Nom : {{user.results.username}}</p>
+        <!-- <p>Nom : {{user.results.username}}</p>
     <p>Age : {{user.results.age}}</p>
     <p>Adresse mail : {{user.results.mail}}</p>
-    <img src="../../../static/img/{{user.results.avatar}}" alt="">
+    <img src="../../../static/img/{{user.results.avatar}}" alt=""> -->
 
-    <p>Post(s) : {{stats.posts}}</p>
-    {% if id == None %}
+        <!-- <p>Post(s) : {{stats.posts}}</p> -->
+        <!-- {% if id == None %}
     <button><a href="{{ url_for('main.followers', id=None ) }}">Abonnements : {{stats.following}}</a></button>
     <button><a href="{{ url_for('main.following', id=None ) }}">Abonné : {{stats.followers}}</a></button>
     {% else %}
     <button><a href="{{ url_for('main.followers', id=id ) }}">Abonnements : {{stats.following}}</a></button>
     <button><a href="{{ url_for('main.following', id=id ) }}">Abonné : {{stats.followers}}</a></button>
-    {% endif %}
+    {% endif %} -->
 
 
 
-    <h1>Posts</h1>
+        <!-- <h1>Posts</h1>
 
-    {% for post in user.results.posts %}
-    <div>
-        <div class="mb-3">
-            <form action="" method="post">
-                <input type="hidden" name="post" value="{{post.id}}">
-                <button>Suprimer(X)</button>
-            </form>
-        </div>
-        <div class="card mb-3">
-            {% if post.image != None %}
-            <img src="/static/uploads/{{post.user_id}}/posts/{{post.id}}/{{post.image}}" class="card-img-top" alt="..."
-                height="350">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ post.title }}</h5>
-                <p class="card-text">{{ post.content }}</p>
-                <p class="card-text">{{ post.like }}</p>
-                <p class="card-text"><small class="text-muted">Poster par
-                        {{ user.results.username + ' le ' + post.publication_date }}</small></p>
-                <div class="d-flex">
-                    <form action="{{ url_for('post.index') }}" method="post">
-                        <input type="hidden" name="postId" value="{{ post.id }}">
-                        <input type="hidden" name="type" value="like">
-                        <button type="submit" name="like" value="like">like</button>
-                    </form>
-                </div>
+        {% for post in user.results.posts %}
+        <div>
+            <div class="mb-3">
+                <form action="" method="post">
+                    <input type="hidden" name="post" value="{{post.id}}">
+                    <button>Suprimer(X)</button>
+                </form>
             </div>
+            <div class="card mb-3">
+                {% if post.image != None %}
+                <img src="/static/uploads/{{post.user_id}}/posts/{{post.id}}/{{post.image}}" class="card-img-top"
+                    alt="..." height="350">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.content }}</p>
+                    <p class="card-text">{{ post.like }}</p>
+                    <p class="card-text"><small class="text-muted">Poster par
+                            {{ user.results.username + ' le ' + post.publication_date }}</small></p>
+                    <div class="d-flex">
+                        <form action="{{ url_for('post.index') }}" method="post">
+                            <input type="hidden" name="postId" value="{{ post.id }}">
+                            <input type="hidden" name="type" value="like">
+                            <button type="submit" name="like" value="like">like</button>
+                        </form>
+                    </div>
+                </div>
 
+            </div>
+            {% endfor %} -->
+
+        <!-- </div> -->
+
+        {% if id == None %}
+        <div class="popup">
+            <div class="popup-content">
+                <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <label for="">Username</label>
+                    <input type="text" name="username" value="{{user.results.username}}">
+
+                    <label for="">Age</label>
+                    <input type="number" name="age" value="{{user.results.age}}">
+
+                    <label for="">Avatar</label>
+                    <input type="file" name="avatar">
+
+                    <button type="submit">Modifier</button>
+                </form>
+            </div>
         </div>
-        {% endfor %}
+        {% endif %}
 
-    </div>
+        {% block js %}
+        <script src="{{ url_for('static',filename='js/popup.js') }}"></script>
+        {% endblock %}
 
-    {% if id == None %}
-    <div class="popup">
-        <div class="popup-content">
-            <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
-            <form action="" method="post" enctype="multipart/form-data">
-                <label for="">username</label>
-                <input type="text" name="username" value="{{user.results.username}}">
-
-                <label for="">age</label>
-                <input type="number" name="age" value="{{user.results.age}}">
-
-                <label for="">avatar</label>
-                <input type="file" name="avatar">
-
-                <button type="submit">modifier</button>
-            </form>
-        </div>
-    </div>
-    {% endif %}
-
-    {% block js %}
-    <script src="{{ url_for('static',filename='js/popup.js') }}"></script>
-    {% endblock %}
-
-    {% endblock body %}
+        {% endblock body %}

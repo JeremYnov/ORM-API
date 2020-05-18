@@ -4,20 +4,20 @@
 {% block body %}
 
 {% if id == None %}
-<button><a href="{{ url_for('main.profil', id=None ) }}">retourner au profil</a></button>
-<button><a href="{{ url_for('main.followers', id=None ) }}">abonnement</a></button>
-<button><a href="{{ url_for('main.following', id=None ) }}">abonné</a></button>
+<button><a href="{{ url_for('main.profil', id=None ) }}">Retourner au profil</a></button>
+<button><a href="{{ url_for('main.followers', id=None ) }}">Abonnement</a></button>
+<button><a href="{{ url_for('main.following', id=None ) }}">Abonné</a></button>
 {% else %}
-<button><a href="{{ url_for('main.profil', id=id ) }}">retourner au profil</a></button>
-<button><a href="{{ url_for('main.followers', id=id ) }}">abonnement</a></button>
-<button><a href="{{ url_for('main.following', id=id ) }}">abonné</a></button>   
+<button><a href="{{ url_for('main.profil', id=id ) }}">Retourner au profil</a></button>
+<button><a href="{{ url_for('main.followers', id=id ) }}">Abonnement</a></button>
+<button><a href="{{ url_for('main.following', id=id ) }}">Abonné</a></button>   
 {% endif %}
 
 {% if followers == [] %}
     {% if id == None %}
-    <p>tu n'es abonné à personne</p>
+    <p>Tu n'es abonné à personne</p>
     {% else %}
-    <p>cette utilisateur n'est abonné à personne</p>
+    <p>Cette utilisateur n'est abonné à personne</p>
     {% endif %}
 {% else %}
     
@@ -46,7 +46,7 @@
             {% if (b.followBy == follower.followby_id) and (b.value == 1) %}
             <form action="" method="post">
                 <input type="hidden" name="followUser" value="{{follower.followby_id}}">
-                <button type="submit">S'abonné</button>
+                <button type="submit">S'abonner</button>
             </form>
             {% endif %}
         {% endfor %}
@@ -74,7 +74,7 @@
     {% if (b.followBy == follower.follower_id) and (b.value == 1) %}
     <form action="" method="post">
         <input type="hidden" name="followUser" value="{{follower.follower_id}}">
-        <button type="submit">S'abonné</button>
+        <button type="submit">S'abonner</button>
     </form>
     {% endif %} 
     {% endfor %}
@@ -91,7 +91,7 @@
 {% if (b.followBy == follower.follower_id) and (b.value == 1) %}
 <form action="" method="post">
     <input type="hidden" name="followUser" value="{{follower.follower_id}}">
-    <button type="submit">S'abonné</button>
+    <button type="submit">S'abonner</button>
 </form>
 {% endif %} 
 {% endfor %}
