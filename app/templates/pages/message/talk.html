@@ -7,14 +7,11 @@
 {% endblock %}
 
 {% block body %}
-{% if error != None %}
-<p>{{error}}</p>
-{% endif %}
 
-<a href="{{url_for('message.list_message')}}">
-    < Voir autres messages</a>
-        <div class="center">
-            <div class="contacts">
+<a href="{{url_for('message.list_message')}}" class="btn btn-secondary">
+    <i class="fas fa-chevron-left"></i> Revenir au messages</a>
+<div class="center">
+    <!-- <div class="contacts">
                 <i class="fas fa-bars fa-2x"></i>
                 <div class="contact">
                     <div class="pic">
@@ -52,54 +49,67 @@
                     <div class="name">Carol Danvers</div>
                     <div class="message">Hey Peter Parker, you got something for me</div>
                 </div>
+            </div> -->
+    <div class="chat">
+
+        <div class="contact bar">
+
+            {% if receiveUser.avatar == 'default.png' %}
+            <!-- <div class="pic"> -->
+            <div>
+                <img height="20px" width="20px" class="pic" src="../../../static/img/{{receiveUser.avatar}}" alt="">
             </div>
-            <div class="chat">
 
-                <div class="contact bar">
-                    <div class="pic">
+            <!-- </div> -->
 
-                    </div>
-                    {% if receiveUser.avatar == 'default.png' %}
-                    <img height="20px" width="20px" src="../../../static/img/{{receiveUser.avatar}}" alt="">
-                    {% else %}
-                    <img height="20px" width="20px" src="../../../static/uploads/{{receiveUser.id}}/avatar/{{receiveUser.avatar}}" alt="">  
-                    {% endif %}
-                    <div class="name">{{receiveUser.username}}</div>
-                </div>
-                <div id="chat" class="messages">
-                    {% if messages %}
-                    {% for message in messages %}
-                    <div class="time">{{message.set_date}}</div>
-                     
-                    <!-- <img src="../../../static/img/{{message.receive_by.avatar}}" alt=""> -->
-                    
-                    {% if userLog != message.send_by %}
-                    <div class="message stark">{{message.content}}</div>
-                    {% else %}
-                    <div class="message parker">{{message.content}}</div>
-                    {% endif %} 
-                    {% endfor %}
-                    {% endif %}
-                    <div class="message stark">
-                        <div class="typing typing-1"></div>
-                        <div class="typing typing-2"></div>
-                        <div class="typing typing-3"></div>
-                    </div>
-                </div>
-                
-                
-                    
-            <form action="" method="post">
-                <div class="input">
-                    <input type="text" name="content" placeholder="type your message here!">
-                    <button type="submit">Valider</button>
-                </div>
-            </form>
+            {% else %}
+            <div class="pic">
+                <img height="20px" width="20px"
+                    src="../../../static/uploads/{{receiveUser.id}}/avatar/{{receiveUser.avatar}}" alt="">
+            </div>
+
+            {% endif %}
+            <div class="name">{{receiveUser.username}}</div>
+        </div>
+        <div id="chat" class="messages">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="time">{{message.set_date}}</div>
+
+            <!-- <img src="../../../static/img/{{message.receive_by.avatar}}" alt=""> -->
+
+            {% if userLog != message.send_by %}
+            <div class="message stark">{{message.content}}</div>
+            {% else %}
+            <div class="message parker">{{message.content}}</div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="message stark">
+                <div class="typing typing-1"></div>
+                <div class="typing typing-2"></div>
+                <div class="typing typing-3"></div>
             </div>
         </div>
 
-        <script>
-            var chat = document.getElementById('chat');
-            chat.scrollTop = chat.scrollHeight - chat.clientHeight;
-        </script>
-        {% endblock %}
+
+        {% if error != None %}
+        <div class="alert alert-danger">
+            {{error}}
+        </div>
+        {% endif %}
+        <form action="" method="post">
+            <div class="input">
+                <input type="text" name="content" placeholder="Écrivez un message...">
+                <button type="submit" class="btn btn-outline-primary send-button"><i
+                        class="far fa-paper-plane"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var chat = document.getElementById('chat');
+    chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+</script>
+{% endblock %}

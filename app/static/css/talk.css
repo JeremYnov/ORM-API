@@ -10,10 +10,15 @@ body, html {
 	background: #F7F7F7;
 }
 
+.fa-chevron-left{
+  color: white;
+  margin-right: 10px;
+}
+
 .center {
 	position: absolute;
 	top: 50%;
-	left: calc(50% + 12rem);
+	left: 50%;
 	transform: translate(-50%, -50%);
 }
 
@@ -25,7 +30,7 @@ body, html {
 	border-radius: 50%;
 }
 
-.contact {
+/* .contact {
 	position: relative;
 	margin-bottom: 1rem;
 	padding-left: 5rem;
@@ -40,10 +45,7 @@ body, html {
   position: absolute;
   left: 0;
 }
-.contact .name {
-  font-weight: 500;
-  margin-bottom: 0.125rem;
-}
+
 .contact .message, .seen {
   font-size: 0.9rem;
   color: #999;
@@ -107,7 +109,7 @@ body, html {
 
 .contacts:hover {
   transform: translate(-23rem, -50%);
-}
+} */
 
 .chat {
 	position: relative;
@@ -116,7 +118,7 @@ body, html {
 	flex-direction: column;
 	justify-content: space-between;
 	
-	width: 24rem;
+	width: 60vw;
 	height: 38rem;
 	z-index: 2;
 	box-sizing: border-box;
@@ -128,11 +130,18 @@ body, html {
 		0rem 2rem 4rem -3rem rgba(black, 0.5);	
 }
 
-.chat.contact .bar {
-  flex-basis: 3.5rem;
-  flex-shrink: 0;
+.contact.bar {
   margin: 1rem;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.name {
+  font-weight: 900;
+  font-size: 1.3em;
+  margin-bottom: 0.125rem;
+  margin-left: 20px;
 }
 
 .chat .messages {
@@ -210,8 +219,8 @@ body, html {
   border:none;
   background-image:none;
   background-color: white;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
+  padding: 20px;
+  /* margin-right: 1rem; */
   border-radius: 1.125rem;
   flex-grow: 2;
   box-shadow: 
@@ -224,15 +233,23 @@ body, html {
 }
 
 .chat .input i {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  color: #666;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 200ms;
+  padding: 10px 5px;
+}
+.send-button:hover i {
+  color: white;
   cursor: pointer;
   transition: color 200ms;
 }
 
-.chat .input i:hover {
+/* .chat .input i:hover {
   color: #333;
+} */
+
+.send-button{
+  border-radius: 100%;
 }
 
 

@@ -30,52 +30,6 @@
 
 
 
-/* RESPONSIVE NAVBAR */
-/* CREATION DU MENU BURGER */
-/* .header-nav-burger {
-    width: 30px;
-    height: 4px;
-    background: black;
-    position: relative;
-}
-
-.header-nav-burger:before {
-    content: "";
-    position: absolute;
-    bottom: 10px;
-    width: 30px;
-    height: 4px;
-    background: black;
-    transition: 0.5s;
-}
-
-.header-nav-burger:after {
-    content: "";
-    position: absolute;
-    top: 10px;
-    width: 30px;
-    height: 4px;
-    background: black;
-    transition: 0.5s;
-}
-
-.header-nav-burger.is-animate {
-    background-color: white;
-}
-
-.header-nav-burger.is-animate:before {
-    transform: rotate(45deg);
-    bottom: 0;
-    transition: 0.5s;
-}
-
-.header-nav-burger.is-animate:after {
-    transform: rotate(-45deg);
-    top: 0;
-    transition: 0.5s;
-} */
-
-
 .header-nav-wrapper {
     cursor: pointer;
     padding: 10px 0;
@@ -98,30 +52,72 @@
     left: 0px;
     transition: 0.6s;
 }
-
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #4e4e4e65;
-    opacity: 0;
-    z-index: -1;
-    transition: 0.6s;
-}
-
-.overlay.is-open {
-    z-index: 9999;
-    opacity: 1;
-    transition: 0.5s ease-in;
-}
-
 .overflow {
     overflow: hidden;
+}
+
+
+
+.form__group__nav {
+    position: relative;
+    padding: 0 ;
+    margin-top: 10px;
+    margin-left: 30px;
+    /* width: 50%; */
+}
+
+.form__field__nav {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid #66FCF1;
+    outline: 0;
+    font-size: 1.3rem;
+    color: #fff;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+.form__field__nav::placeholder{
+    color: #66FCF1;
+}
+
+/* .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #66FCF1;
+} */
+
+.form__field:focus {
+
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #45A29E, #66FCF1);
+    border-image-slice: 1;
+}
+
+.form__field:focus~.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #11998e;
+    font-weight: 700;
+}
+
+/* reset input */
+.form__field:required {
+    box-shadow: none;
+}
+
+.form__field:invalid {
+    box-shadow: none;
 }
 
 

@@ -16,10 +16,15 @@
     <nav class="header-nav">
         
         <ul class="nav-list">
-            <input type="text" class="search_profil-js" placeholder="recherche..">
+            <!-- <input type="text" class="search_profil-js" placeholder="recherche.."> -->
             <li class="nav-item"><a href="{{ url_for('post.index') }}">Home</a></li>
             <li class="nav-item"><a href="{{ url_for('message.list_message') }}">Message</a></li>
             <li class="nav-item"><a href="{{ url_for('main.profil') }}">Profil</a></li>
+
+            <div class="form__group__nav field">
+                <input type="text" class="form__field__nav search_profil-js" name="search" placeholder="Rechercher.."/>
+                <!-- <label for="search" class="form__label">Rechercher</label> -->
+            </div>
         </ul>
     </nav>
 

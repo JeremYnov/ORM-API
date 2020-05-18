@@ -51,7 +51,7 @@ def talk(id):
     if request.method == 'POST':
         content = request.form['content']
         if content == "":
-            error = "vous n'avez pas écris de message"
+            error = "Vous n'avez pas écris de message"
         else:    
             now = datetime.datetime.utcnow() + timedelta(hours=2)
             message = Message(content, now.strftime('%Y-%m-%d %H:%M:%S'), userLog, receiveUser)
