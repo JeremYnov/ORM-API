@@ -119,8 +119,8 @@ def createApiPostFollowBy(id):
                             'publication_date': post.publication_date,
                             'modification_date': post.modification_date,
                             'user': {
-                                'id': str(follow.follower.id),
-                                'username': follow.follower.username
+                                'id': str(follow.followby.id),
+                                'username': follow.followby.username
                             },
                             'likes': str(len(post.like_post)),
                             'comments': arrayComment
