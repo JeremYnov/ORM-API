@@ -2,7 +2,8 @@
 {% block title %}Home page{% endblock %}
 
 {% block link %}
-<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">{% endblock %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">
+{% endblock %}
 
 {% block body %}
 
@@ -118,21 +119,38 @@
     <div class="popup-content">
         <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
         <form action="" method="post" enctype="multipart/form-data">
-            <div>
-                <label for="title">titre</label>
-                <input type="text" name="title" id="name" placeholder="">
+            <div class="form__group field">
+                    <input type="text" class="form__field" name="title" />
+                    <label for="title" class="form__label">Titre</label>
+                <!-- <label for="title">titre</label>
+                <input type="text" name="title" id="name" placeholder=""> -->
             </div>
-            <div>
+
+            <div class="form__group field">
+                <textarea name="content" id="content" cols="10" rows="3" class="form__field"></textarea>
+                <label for="title" class="form__label__textarea">Description</label>
+                <!-- <label for="content">description</label>
+                <textarea name="content" id="content" cols="30" rows="10"></textarea> -->
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-prepend" >
+                  <span class="input-group-text">Upload</span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" style="cursor: pointer;" name="image">
+                  <label class="custom-file-label" for="image" style="cursor: pointer;">Choisir une image</label>
+                </div>
+              </div>
+
+
+            <!-- <div>
                 <label for="image">image</label>
                 <input type="file" name="image" id="image">
-            </div>
-            <div>
-                <label for="content">description</label>
-                <textarea name="content" id="content" cols="30" rows="10"></textarea>
-            </div>
-            <input type="hidden" name="type" value="newPost">
-            <div>
-                <button type="submit">Envoyer</button>
+            </div> -->
+            
+            <div class="submit-button-wrapper">
+                <button type="submit" class="submit-button">Envoyer</button>
             </div>
         </form>
     </div>
