@@ -78,10 +78,14 @@ def talk(id):
 @message.route('/user', methods=['GET', 'POST'])  
 def search_user(): 
     user = request.form.get("text")
+    search = request.form.get("search")
 
     db = pymysql.connect("localhost", "root", "", "social_network")
     cursor = db.cursor()
-    sql = "select id, username, avatar from User where username LIKE '{}%' order by username".format(user)
+    if user != None:
+        sql = "select id, username, avatar from User where username LIKE '{}%' order by username".format(user)
+    elif search != None:
+        sql = "select id, username, avatar from User where username LIKE '{}%' order by username".format(search)
     cursor.execute(sql)
     result = cursor.fetchall()
     userSearch = []

@@ -1,12 +1,12 @@
 $(document).ready(function () {
     $('.search_profil-js').on("input", function (e) {
-        user = $('.search_profil-js').val()
+        searchUser = $('.search_profil-js').val()
         $.ajax({
             method: "post",
             url: "/user",
-            data: { search: user },
+            data: { search: searchUser },
             success: function (res) {
-                if (user == "") {
+                if (searchUser == "") {
                     $('.profil_user-js').html("");
                 } else if (res != "") {
                     $('.profil_user-js').html("");
