@@ -92,26 +92,28 @@ def profil(id=None):
     userLog = current_user
     URL_ROOT = request.url_root
     error = None
-
+    follow = 0
     if(id == None):
         # user connecter
         url = URL_ROOT + 'api/post/user/' + str(userLog.id)
         user = User.query.filter_by(id=userLog.id).first()
 
         if request.method == 'POST':
-            username = request.form['username']
-            age = request.form['age']
+            username = request.form.get('username')
+            age = request.form.get('age')
 
-            if username == "":
-                error = "vous n'avez pas mis votre username"
+            if username != None:
+                
+                if username == "":
+                    error = "vous n'avez pas mis votre username"
 
-            elif age == "":
-                error = "vous n'avez pas mis votre age"  
+                elif age == "":
+                    error = "vous n'avez pas mis votre age"  
 
-            else:
-                user.username = username
-                user.age = age
-                db.session.commit()
+                else:
+                    user.username = username
+                    user.age = age
+                    db.session.commit()
 
     elif id == userLog.id:            
         return redirect(url_for('main.profil', id=None))
@@ -119,24 +121,40 @@ def profil(id=None):
     else:
         url = URL_ROOT + 'api/post/user/' + str(id)
         user = User.query.filter_by(id=id).first()
+
+        follow = Follow.query.filter_by(follower_id=userLog.id, followby_id=id).first()
+        if not(follow):
+            follow = 1
+
+        if request.method == 'POST':
+
+            if follow == 1:
+                following = Follow(userLog, user)
+                db.session.add(following)
+
+            else:
+                db.session.delete(follow)
            
     following = Follow.query.filter_by(follower_id=user.id).count()
     followers = Follow.query.filter_by(followby_id=user.id).count()
     numberPosts = Post.query.filter_by(user_id=user.id).count()
     stats = {"followers": followers, "following": following, "posts": numberPosts}
 
-    follow = Follow.query.filter_by(follower_id=userLog.id, followby_id=id).first()
-    if not(follow):
-        follow = 1
+    
 
     if request.method == 'POST':
+        post = request.form.get('post')
+        if post != None:
+            postDelete = Post.query.filter_by(id=post).first()
+            print("AAAAAAAAAAAAAAAAAAA : " + str(postDelete.like_post))
+            for like in postDelete.like_post:
+                like.like.remove(like)
+            commentDelete = Comment.query.filter_by(id=post).all()  
+            for comment in commentDelete:
+                db.session.delete(comment)
+           
+            db.session.delete(postDelete)
 
-        if follow == 1:
-            following = Follow(userLog, user)
-            db.session.add(following)
-
-        else:
-            db.session.delete(follow)
 
         db.session.commit()
         return redirect(url_for('main.profil', id=id))
@@ -152,6 +170,15 @@ def profil(id=None):
 def followers(id=None):
     if not(current_user.is_authenticated):
         return redirect(url_for('main.login'))
+
+    route = 0
+    url = request.url_rule
+
+    if str(url) == "/profil/followers":
+        route = 1
+
+    elif id != None:
+        route = 2 
 
     userLog = current_user
     button = []
@@ -202,7 +229,8 @@ def followers(id=None):
             return redirect(url_for('main.followers', id=id))    
 
 
-    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button)
+    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button,route=route)
+
 
 
 @main.route('/profil/<int:id>/following', methods=['GET', 'POST'], strict_slashes=False)
@@ -211,22 +239,34 @@ def following(id=None):
     if not(current_user.is_authenticated):
         return redirect(url_for('main.login'))
 
+    route = 0    
+    url = request.url_rule
+    if str(url) == "/profil/following":
+        route = 3
+    elif id != None:
+        route = 4
     userLog = current_user
     button = []
+    followerUserLog = Follow.query.filter_by(follower_id=userLog.id).all() 
     if id == None:
         followers = Follow.query.filter_by(followby_id=userLog.id).all()
 
-        if request.method == 'POST':
-            follower = request.form.get('follower')
-            userLogUnFollow = Follow.query.filter_by(followby_id=userLog.id, follower_id=follower).first()
-            db.session.delete(userLogUnFollow)
-            db.session.commit()
-            return redirect(url_for('main.followers', id=None))
+        for follower in followers:
+            status = False
+
+            for followerUser in followerUserLog:
+                
+                if follower.follower_id == followerUser.followby_id:
+                    button.append({'followBy': follower.follower_id, 'value': 0})
+                    status = True
+
+            if status == False:
+                button.append({'followBy': follower.follower_id, 'value': 1})
 
     else: 
         user = User.query.filter_by(id=id).first()
         followers = Follow.query.filter_by(followby_id=user.id).all()      
-        followerUserLog = Follow.query.filter_by(followby_id=userLog.id).all() 
+        followerUserLog = Follow.query.filter_by(follower_id=userLog.id).all() 
     
         for follower in followers:
             status = False
@@ -236,28 +276,30 @@ def following(id=None):
                     status = True
 
             for followerUser in followerUserLog:
-                
-                if follower.follower_id == followerUser.follower_id and status == False:
+                print(followerUser.follower_id)
+                print(followerUser.followby_id)
+                if follower.follower_id == followerUser.followby_id and status == False:
                     button.append({'followBy': follower.follower_id, 'value': 0})
                     status = True
 
             if status == False:
                 button.append({'followBy': follower.follower_id, 'value': 1})
             
-        if request.method == 'POST':  
-            unfollowUser = request.form.get('unfollowUser')  
-            followUser = request.form.get('followUser') 
+    if request.method == 'POST':  
+        unfollowUser = request.form.get('unfollowUser')  
+        followUser = request.form.get('followUser') 
 
-            if unfollowUser != None:
-                userLogUnFollow = Follow.query.filter_by(followby_id=userLog.id, follower_id=unfollowUser).first()
-                db.session.delete(userLogUnFollow)
+        if unfollowUser != None:
+            userLogUnFollow = Follow.query.filter_by(followby_id=unfollowUser, follower_id=userLog.id).first()
+            db.session.delete(userLogUnFollow)
 
-            else:
-                userFollow = User.query.filter_by(id=followUser).first()
-                following = Follow(userLog, userFollow)
-                db.session.add(following)
-            db.session.commit()
-            return redirect(url_for('main.followers', id=id))    
+        else:
+            userFollow = User.query.filter_by(id=followUser).first()
+            following = Follow(userLog, userFollow)
+            db.session.add(following)  
+
+        db.session.commit()
+        return redirect(url_for('main.following', id=id))    
 
 
-    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button)
+    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button, route=route)

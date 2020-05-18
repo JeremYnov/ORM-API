@@ -12,7 +12,7 @@ like = db.Table('like',
                 )
 
 
-class User(UserMixin,db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -74,11 +74,19 @@ class Post(db.Model):
 
 class Comment(db.Model):
     __tablename__ = 'comment'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
-    content = db.Column(db.String(50))
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    content = db.Column(db.String(255))
     publication_date = db.Column(db.DateTime)
     post = db.relationship("Post")
+    user = db.relationship("User")
+
+    def __init__(self, user_id, post_id, content, publication_date):
+        self.user_id = user_id.id
+        self.post_id = post_id.id
+        self.content = content
+        self.publication_date = publication_date
 
 
 class Message(db.Model):

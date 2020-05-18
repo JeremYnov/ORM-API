@@ -4,9 +4,11 @@
 {% block body %}
 
 {% if id == None %}
+<button><a href="{{ url_for('main.profil', id=None ) }}">retourner au profil</a></button>
 <button><a href="{{ url_for('main.followers', id=None ) }}">abonnement</a></button>
 <button><a href="{{ url_for('main.following', id=None ) }}">abonné</a></button>
 {% else %}
+<button><a href="{{ url_for('main.profil', id=id ) }}">retourner au profil</a></button>
 <button><a href="{{ url_for('main.followers', id=id ) }}">abonnement</a></button>
 <button><a href="{{ url_for('main.following', id=id ) }}">abonné</a></button>   
 {% endif %}
@@ -19,19 +21,21 @@
     {% endif %}
 {% else %}
     
+
+{% if (route == 1) or (route == 2) %}
 {% for follower in followers %}
 <a href="{{ url_for('main.profil', id=follower.followby_id ) }}">
     <p>{{follower.followby.username}}</p>
     <img height="50px" width="50px" src="../../../static/img/{{follower.followby.avatar}}" alt="">
 </a>
 
-    {% if id == None %}
+    {% if route == 1 %}
     <form action="" method="post">
         <input type="hidden" name="follower" value="{{follower.followby_id}}">
         <button type="submit">Se désabonner</button>
     </form>    
     {% endif %}
-    {% if id != None %}
+    {% if route == 2 %}
         {% for b in button %}
             {% if (b.followBy == follower.followby_id) and (b.value == 0) %}
             <form action="" method="post">
@@ -47,9 +51,54 @@
             {% endif %}
         {% endfor %}
     {% endif %}    
-    
+{% endfor %}
+{% endif %}
+{% endif %}
 
+
+{% if (route == 3) or (route == 4) %}
+{% for follower in followers %}
+<a href="{{ url_for('main.profil', id=follower.follower_id ) }}">
+<p>{{follower.follower.username}}</p>
+<img height="50px" width="50px" src="../../../static/img/{{follower.follower.avatar}}" alt="">
+</a>
+
+{% if route == 3 %}
+    {% for b in button %}
+    {% if (b.followBy == follower.follower_id) and (b.value == 0) %}
+    <form action="" method="post">
+        <input type="hidden" name="unfollowUser" value="{{follower.follower_id}}">
+        <button type="submit">Se désabonner</button>
+    </form> 
+    {% endif %}
+    {% if (b.followBy == follower.follower_id) and (b.value == 1) %}
+    <form action="" method="post">
+        <input type="hidden" name="followUser" value="{{follower.follower_id}}">
+        <button type="submit">S'abonné</button>
+    </form>
+    {% endif %} 
+    {% endfor %}
+{% endif %}
+
+{% if route == 4 %}
+{% for b in button %}
+{% if (b.followBy == follower.follower_id) and (b.value == 0) %}
+<form action="" method="post">
+    <input type="hidden" name="unfollowUser" value="{{follower.follower_id}}">
+    <button type="submit">Se désabonner</button>
+</form> 
+{% endif %}
+{% if (b.followBy == follower.follower_id) and (b.value == 1) %}
+<form action="" method="post">
+    <input type="hidden" name="followUser" value="{{follower.follower_id}}">
+    <button type="submit">S'abonné</button>
+</form>
+{% endif %} 
+{% endfor %}
+
+{% endif %}
 
 {% endfor %}
 {% endif %}
+
 {% endblock body %}
