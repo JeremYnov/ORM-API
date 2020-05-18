@@ -30,3 +30,12 @@
     padding: 5px 8px;
     color: black;
 }
+
+.like-button{
+    background-color: none;
+    border: none;
+    background: transparent;
+}
+.like-button i{
+    color: red;
+}
