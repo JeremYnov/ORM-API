@@ -144,3 +144,12 @@
 .result_user_js{
     padding-top: 10px;
 }
+
+.new-message{
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+.new-message i{
+    color: white;
+}

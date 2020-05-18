@@ -5,7 +5,10 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='css/message.css') }}">
 {% endblock %}
 {% block body %}
-<button type="submit" class="add-talk-js">Nouveau message</button>
+<div class="new-message">
+    <button type="submit" class="add-talk-js btn btn-primary"> <i class="fas fa-envelope-open-text"></i> Nouveau message</button>
+</div>
+
 
 <div class="center">
     <div class="contacts">
