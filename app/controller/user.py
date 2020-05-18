@@ -10,23 +10,6 @@ import shutil
 main = Blueprint('main', __name__, url_prefix='/')
 
 
-@main.route('/zeaafae')
-def index():
-    return render_template('pages/index.html')
-
-
-@main.route('/user')
-def user():
-    return "controller user"
-
-
-@main.route('/createdb')
-def createdb():
-    db.drop_all()
-    db.create_all()
-    return "la db a été créer"
-
-
 @main.route('/logout')
 def logout():
     logout_user()
