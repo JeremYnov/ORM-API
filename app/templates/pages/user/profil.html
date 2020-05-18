@@ -88,15 +88,10 @@
                     <h5 class="mb-3">Posts récents</h5>
                     {% for post in user.results.posts %}
                     <div>
-                        <div class="mb-3">
-                            {% if userLog.id == post.user_id %}
-                            <form action="" method="post">
-                                <input type="hidden" name="post" value="{{post.id}}">
-                                <button>Suprimer(X)</button>
-                            </form>
-                            {% endif %}
-                        </div>
-                        <div class="p-4 bg-light rounded shadow-sm">
+                        <!-- <div class="mb-3">
+                            
+                        </div> -->
+                        <!-- <div class="p-4 bg-light rounded shadow-sm">
                             <h5 class="mb-3">{{ post.title }}s</h5>
                             <p class="font-italic mb-0">{{ post.content }}</p>
                             <ul class="list-inline small text-muted mt-3 mb-0">
@@ -106,17 +101,26 @@
                                 <li class="list-inline-item"><i class="fa fa-comment-o mr-2"></i>12 Comments</li>
 
                             </ul>
-                        </div>
+                        </div> -->
                         <div class="card mb-3">
                             {% if post.image != None %}
                             <img src="/static/uploads/{{post.user_id}}/posts/{{post.id}}/{{post.image}}"
                                 class="card-img-top" alt="..." height="350">
                             {% endif %}
                             <div class="card-body">
+                                {% if userLog.id == post.user_id %}
+                                <div class="delete-post">
+                                    <form action="" method="post">
+                                        <input type="hidden" name="post" value="{{post.id}}">
+                                        <button class="delete"><i class="far fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+                                
+                                {% endif %}
                                 <h5 class="card-title">{{ post.title }}</h5>
                                 <p class="card-text">{{ post.content }}</p>
                                 <p class="card-text">{{ post.like }}</p>
-                                <p class="card-text"><small class="text-muted">Poster par
+                                <p class="card-text"><small class="text-muted">Posté par
                                         {{ user.results.username + ' le ' + post.publication_date }}</small></p>
                                 <div class="d-flex">
                                     <form action="{{ url_for('post.index') }}" method="post">

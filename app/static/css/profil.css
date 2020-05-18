@@ -14,3 +14,19 @@
 .button-profil-wrapper{
     display: flex;
 }
+
+.delete-post{
+    display: flex;
+    justify-content: flex-end;
+    
+}
+.delete{
+    background-color: none;
+    border: none;
+    background: transparent;
+}
+
+.delete i{
+    padding: 5px 8px;
+    color: black;
+}
