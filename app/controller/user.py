@@ -155,9 +155,8 @@ def profil(id=None):
         post = request.form.get('post')
         if post != None:
             postDelete = Post.query.filter_by(id=post).first()
-            print("AAAAAAAAAAAAAAAAAAA : " + str(postDelete.like_post))
-            for like in postDelete.like_post:
-                like.like.remove(like)
+            postDelete.like = []
+            db.session.commit()
             commentDelete = Comment.query.filter_by(id=post).all()
             for comment in commentDelete:
                 db.session.delete(comment)
