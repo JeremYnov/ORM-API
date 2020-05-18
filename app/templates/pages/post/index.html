@@ -30,7 +30,8 @@
 
 
 <div class="container">
-    <button type="submit" class="add-talk-js btn btn-primary btn-lg btn-block"><i class="fas fa-plus-circle"></i>Nouveau post</button>
+    <button type="submit" class="add-talk-js btn btn-primary btn-lg btn-block"><i class="fas fa-plus-circle"></i>Nouveau
+        post</button>
     {% if posts.success %}
     {% for post in posts.results.posts %}
     <div class="card mb-3">
@@ -121,8 +122,8 @@
         <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
         <form action="" method="post" enctype="multipart/form-data">
             <div class="form__group field">
-                    <input type="text" class="form__field" name="title" />
-                    <label for="title" class="form__label">Titre</label>
+                <input type="text" class="form__field" name="title" />
+                <label for="title" class="form__label">Titre</label>
                 <!-- <label for="title">titre</label>
                 <input type="text" name="title" id="name" placeholder=""> -->
             </div>
@@ -135,21 +136,21 @@
             </div>
 
             <div class="input-group">
-                <div class="input-group-prepend" >
-                  <span class="input-group-text">Upload</span>
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
                 </div>
                 <div class="custom-file">
-                  <input type="file" class="custom-file-input" style="cursor: pointer;" name="image">
-                  <label class="custom-file-label" for="image" style="cursor: pointer;">Choisir une image</label>
+                    <input type="file" class="custom-file-input" style="cursor: pointer;" name="image">
+                    <label class="custom-file-label" for="image" style="cursor: pointer;">Choisir une image</label>
                 </div>
-              </div>
+            </div>
 
 
             <!-- <div>
                 <label for="image">image</label>
                 <input type="file" name="image" id="image">
             </div> -->
-            
+            <input type="hidden" name="type" value="newPost">
             <div class="submit-button-wrapper">
                 <button type="submit" class="submit-button">Envoyer</button>
             </div>
