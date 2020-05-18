@@ -20,7 +20,7 @@
             <div class="px-4 pt-0 bg-dark">
                 <div class="media align-items-end profile-header">
                     <div class="profile mr-3"><img
-                            src="../../../static/img/{{user.results.avatar}}" alt="..."
+                            src="/static/uploads/{{user.results.id}}/avatar/{{user.results.avatar}}" alt="..."
                             width="130" class="rounded mb-2 img-thumbnail">
                         {% if id == None %}
                         <button type="submit" class="btn btn-dark btn-sm btn-block add-talk-js">Modifier le
@@ -31,9 +31,11 @@
 
                         <form action="" method="post">
                             {% if follow == 1 %}
-                            <button type="submit" name="followUser" class="btn btn-dark btn-sm btn-block">S'abonner</button>
+                            <button type="submit" name="followUser"
+                                class="btn btn-dark btn-sm btn-block">S'abonner</button>
                             {% else %}
-                            <button type="submit" name="unfollowUser" class="btn btn-dark btn-sm btn-block">Se désabonner</button>
+                            <button type="submit" name="unfollowUser" class="btn btn-dark btn-sm btn-block">Se
+                                désabonner</button>
                             {% endif %}
                         </form>
                         {% endif %}
@@ -155,13 +157,13 @@
         {% endif %} -->
 
 
-        <!-- <p>Nom : {{user.results.username}}</p>
+    <!-- <p>Nom : {{user.results.username}}</p>
     <p>Age : {{user.results.age}}</p>
     <p>Adresse mail : {{user.results.mail}}</p>
     <img src="../../../static/img/{{user.results.avatar}}" alt=""> -->
 
-        <!-- <p>Post(s) : {{stats.posts}}</p> -->
-        <!-- {% if id == None %}
+    <!-- <p>Post(s) : {{stats.posts}}</p> -->
+    <!-- {% if id == None %}
     <button><a href="{{ url_for('main.followers', id=None ) }}">Abonnements : {{stats.following}}</a></button>
     <button><a href="{{ url_for('main.following', id=None ) }}">Abonné : {{stats.followers}}</a></button>
     {% else %}
@@ -171,7 +173,7 @@
 
 
 
-        <!-- <h1>Posts</h1>
+    <!-- <h1>Posts</h1>
 
         {% for post in user.results.posts %}
         <div>
@@ -204,30 +206,30 @@
             </div>
             {% endfor %} -->
 
-        <!-- </div> -->
+    <!-- </div> -->
 
-        {% if id == None %}
-        <div class="popup">
-            <div class="popup-content">
-                <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
-                <form action="" method="post" enctype="multipart/form-data">
-                    <label for="">Username</label>
-                    <input type="text" name="username" value="{{user.results.username}}">
+    {% if id == None %}
+    <div class="popup">
+        <div class="popup-content">
+            <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
+            <form action="" method="post" enctype="multipart/form-data">
+                <label for="">Username</label>
+                <input type="text" name="username" value="{{user.results.username}}">
 
-                    <label for="">Age</label>
-                    <input type="number" name="age" value="{{user.results.age}}">
+                <label for="">Age</label>
+                <input type="number" name="age" value="{{user.results.age}}">
 
-                    <label for="">Avatar</label>
-                    <input type="file" name="avatar">
+                <label for="">Avatar</label>
+                <input type="file" name="avatar">
 
-                    <button type="submit">Modifier</button>
-                </form>
-            </div>
+                <button type="submit">Modifier</button>
+            </form>
         </div>
-        {% endif %}
+    </div>
+    {% endif %}
 
-        {% block js %}
-        <script src="{{ url_for('static',filename='js/popup.js') }}"></script>
-        {% endblock %}
+    {% block js %}
+    <script src="{{ url_for('static',filename='js/popup.js') }}"></script>
+    {% endblock %}
 
-        {% endblock body %}
+    {% endblock body %}
