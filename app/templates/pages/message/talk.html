@@ -70,6 +70,17 @@
 
             {% endif %}
             <div class="name">{{receiveUser.username}}</div>
+            {% if follow != None %}
+            <form action="" method="post">
+            <input type="hidden" name="unfollow" value="{{receiveUser.id}}">
+            <button type="submit">Se désabonné</button>
+            </form>
+            {% else %}
+            <form action="" method="post">
+            <input type="hidden" name="follow" value="{{receiveUser.id}}">
+            <button type="submit">S'abonné</button>
+            </form>
+            {% endif %}
         </div>
         <div id="chat" class="messages">
             {% if messages %}
