@@ -79,7 +79,7 @@ def index():
 @post.route('/api/post/<int:id>', methods=['GET'])
 def createApiPostFollowBy(id):
     try:
-        follows = Follow.query.filter_by(followby_id=id).all()
+        follows = Follow.query.filter_by(follower_id=id).all()
 
         if not(follows):
             raise Exception({
@@ -92,7 +92,7 @@ def createApiPostFollowBy(id):
 
             for follow in follows:
 
-                for post in follow.follower.post:
+                for post in follow.followby.post:
                     arrayComment = []
 
                     comments = Comment.query.filter_by(
