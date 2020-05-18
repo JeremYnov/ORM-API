@@ -14,12 +14,12 @@
 
     {% if id == None %}
 
-    <button type="submit" class="add-talk-js">modifier Profil</button>
-    <button><a href="{{url_for('post.index')}}">creer un nouveau post</a></button>
+    <button type="submit" class="add-talk-js">Modifier Profil</button>
+    <button><a href="{{url_for('post.index')}}">Créer un nouveau post</a></button>
 
     {% else %}
 
-    <button><a href="{{url_for('message.talk', id=user.results.id)}}">ecrire un message</a></button>
+    <button><a href="{{url_for('message.talk', id=user.results.id)}}">Écrire un message</a></button>
 
     <form action="" method="post">
         {% if follow == 1 %}
@@ -31,23 +31,23 @@
     {% endif %}
 
 
-    <p>nom : {{user.results.username}}</p>
-    <p>age : {{user.results.age}}</p>
-    <p>mail : {{user.results.mail}}</p>
+    <p>Nom : {{user.results.username}}</p>
+    <p>Age : {{user.results.age}}</p>
+    <p>Adresse mail : {{user.results.mail}}</p>
     <img src="../../../static/img/{{user.results.avatar}}" alt="">
 
-    <p>post : {{stats.posts}}</p>
+    <p>Post(s) : {{stats.posts}}</p>
     {% if id == None %}
-    <button><a href="{{ url_for('main.followers', id=None ) }}">abonnements : {{stats.following}}</a></button>
-    <button><a href="{{ url_for('main.following', id=None ) }}">abonné : {{stats.followers}}</a></button>
+    <button><a href="{{ url_for('main.followers', id=None ) }}">Abonnements : {{stats.following}}</a></button>
+    <button><a href="{{ url_for('main.following', id=None ) }}">Abonné : {{stats.followers}}</a></button>
     {% else %}
-    <button><a href="{{ url_for('main.followers', id=id ) }}">abonnements : {{stats.following}}</a></button>
-    <button><a href="{{ url_for('main.following', id=id ) }}">abonné : {{stats.followers}}</a></button>
+    <button><a href="{{ url_for('main.followers', id=id ) }}">Abonnements : {{stats.following}}</a></button>
+    <button><a href="{{ url_for('main.following', id=id ) }}">Abonné : {{stats.followers}}</a></button>
     {% endif %}
 
 
 
-    <h1>post</h1>
+    <h1>Posts</h1>
 
     {% for post in user.results.posts %}
     <div>
