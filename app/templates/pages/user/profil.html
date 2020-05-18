@@ -20,11 +20,11 @@
 <button><a href="{{url_for('message.talk', id=user.results.id)}}">ecrire un message</a></button>
 
 <form action="" method="post">
-{% if follow == 1 %}
-<button type="submit" name="followUser">S'abonner</button>
-{% else %}
-<button type="submit" name="unfollowUser">Se désabonner</button>
-{% endif %}
+    {% if follow == 1 %}
+    <button type="submit" name="followUser">S'abonner</button>
+    {% else %}
+    <button type="submit" name="unfollowUser">Se désabonner</button>
+    {% endif %}
 </form>
 {% endif %}
 
@@ -39,7 +39,7 @@
 <button><a href="{{ url_for('main.followers', id=None ) }}">abonnements : {{stats.following}}</a></button>
 <button><a href="{{ url_for('main.following', id=None ) }}">abonné : {{stats.followers}}</a></button>
 {% else %}
-<button><a href="{{ url_for('main.followers', id=id ) }}">abonnements : {{stats.following}}</a></button>  
+<button><a href="{{ url_for('main.followers', id=id ) }}">abonnements : {{stats.following}}</a></button>
 <button><a href="{{ url_for('main.following', id=id ) }}">abonné : {{stats.followers}}</a></button>
 {% endif %}
 
@@ -50,16 +50,16 @@
 {% for post in user.results.posts %}
 <div>
     <form action="" method="post">
-    <input type="hidden" name="post" value="{{post.id}}">
-    <button>Suprimer(X)</button>
+        <input type="hidden" name="post" value="{{post.id}}">
+        <button>Suprimer(X)</button>
     </form>
     <p>{{user.results.username}}</p>
     <p>{{post.title}}</p>
     <p>{{post.publication_date}}</p>
     {% if post.image == 'default.png' %}
-        <img src="../../../static/img/{{post.image}}" alt="">
+    <img src="../../../static/img/{{post.image}}" alt="">
     {% else %}
-        <img src="../../../static/uploads/{{post.user_id}}/avatar/{{post.image}}" alt="">
+    <img src="../../../static/uploads/{{post.user_id}}/avatar/{{post.image}}" alt="">
     {% endif %}
     <p>{{post.content}}</p>
     <p>{{post.like}}</p>
@@ -71,7 +71,7 @@
 <div class="popup">
     <div class="popup-content">
         <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <label for="">username</label>
             <input type="text" name="username" value="{{user.results.username}}">
 

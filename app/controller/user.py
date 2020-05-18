@@ -5,6 +5,7 @@ from flask_login import LoginManager, login_user, current_user, logout_user
 import requests
 import os
 import shutil
+from werkzeug.utils import secure_filename
 
 
 main = Blueprint('main', __name__, url_prefix='/')
@@ -98,6 +99,9 @@ def profil(id=None):
         if request.method == 'POST':
             username = request.form.get('username')
             age = request.form.get('age')
+            avatar = request.files.get('avatar')
+
+            print(avatar)
 
             if username != None:
 
@@ -108,6 +112,14 @@ def profil(id=None):
                     error = "vous n'avez pas mis votre age"
 
                 else:
+
+                    if avatar != "":
+                        resp = uploadImage(avatar, user)
+                        if resp:
+                            user.avatar = avatar.filename
+                        else:
+                            error = "l'image n'a pas été envoyer car ce n'est pas une image"
+
                     user.username = username
                     user.age = age
                     db.session.commit()
@@ -302,3 +314,33 @@ def following(id=None):
         return redirect(url_for('main.following', id=id))
 
     return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button, route=route)
+
+
+def allowed_image(filename):
+
+    # We only want files with a . in the filename
+    if not "." in filename:
+        return False
+
+    # Split the extension from the filename
+    ext = filename.rsplit(".", 1)[1]
+
+    # Check if the extension is in ALLOWED_IMAGE_EXTENSIONS
+    if ext.upper() in ["JPEG", "JPG", "PNG"]:
+        return True
+    else:
+        return False
+
+
+def uploadImage(image, user):
+    if allowed_image(image.filename):
+        if image.mimetype == 'image/png' or image.mimetype == 'image/jpg' or image.mimetype == 'image/jpeg':
+
+            filename = secure_filename(image.filename)
+            uploads_dir = 'app/static/uploads/' + str(user.id) + '/avatar/'
+            os.makedirs(uploads_dir, exist_ok=True)
+            image.save(os.path.join(uploads_dir, filename))
+
+            return True
+
+    return False
