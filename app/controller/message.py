@@ -48,19 +48,30 @@ def talk(id):
     messages = db.session.query(Message).filter(or_(Message.send_by_id==id, Message.receive_by_id==id)).filter(or_(Message.send_by_id==userLog.id, Message.receive_by_id==userLog.id)).order_by(Message.set_date).all()
     receiveUser = User.query.filter_by(id=id).first()
     error = None
+    follow = Follow.query.filter_by(follower_id=userLog.id, followby_id=id).first()
     if request.method == 'POST':
-        content = request.form['content']
-        if content == "":
-            error = "Vous n'avez pas écris de message"
-        else:    
-            now = datetime.datetime.utcnow() + timedelta(hours=2)
-            message = Message(content, now.strftime('%Y-%m-%d %H:%M:%S'), userLog, receiveUser)
-            db.session.add(message)
-            db.session.commit()
-            return redirect(url_for('message.talk', id=id))
+        content = request.form.get('content')
+        unfollow = request.form.get('unfollow')
+        following = request.form.get('follow')
+        if content != None:
+            if content == "":
+                error = "Vous n'avez pas écris de message"
+            else:    
+                now = datetime.datetime.utcnow() + timedelta(hours=2)
+                message = Message(content, now.strftime('%Y-%m-%d %H:%M:%S'), userLog, receiveUser)
+                db.session.add(message)
+        elif unfollow != None:
+            db.session.delete(follow) 
+        elif following != None:
+            following = Follow(userLog, receiveUser)
+            db.session.add(following)   
+        db.session.commit()   
+        return redirect(url_for('message.talk', id=id))
+
+    
 
 
-    return render_template('pages/message/talk.html', messages=messages, userLog=userLog, id=id, error=error, receiveUser=receiveUser)    
+    return render_template('pages/message/talk.html', messages=messages, userLog=userLog, id=id, error=error, receiveUser=receiveUser, follow=follow)    
 
 
 
