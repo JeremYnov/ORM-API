@@ -60,7 +60,7 @@ def talk(id):
             return redirect(url_for('message.talk', id=id))
 
 
-    return render_template('pages/message/talk2.html', messages=messages, userLog=userLog, id=id, error=error)    
+    return render_template('pages/message/talk.html', messages=messages, userLog=userLog, id=id, error=error, receiveUser=receiveUser)    
 
 
 

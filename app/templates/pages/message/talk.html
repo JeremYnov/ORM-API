@@ -1,31 +1,107 @@
-{% extends "base.html" %}
-{% block title %}talk{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/talk.css') }}">
+{% endblock %}
 
 {% block body %}
-
-<a href="{{url_for('message.list_message')}}">< Voir autres messages</a>
-
 {% if error != None %}
 <p>{{error}}</p>
 {% endif %}
 
-{% if messages %}
-{% for message in messages %}
-    <p>{{message.set_date}}</p>
-    <p>{{message.content}}</p>
-    <p>{{message.send_by}}</p>
-    {% if userLog != message.send_by %}
-        <img src="../../../static/img/{{message.receive_by.avatar}}" alt="">
-    {% endif %}
-{% endfor %}
-{% endif %}
+<a href="{{url_for('message.list_message')}}">
+    < Voir autres messages</a>
+        <div class="center">
+            <div class="contacts">
+                <i class="fas fa-bars fa-2x"></i>
+                <div class="contact">
+                    <div class="pic">
+                        <div class="roger"></div>
+                    </div>
+                    <div class="badge">14</div>
+                    <div class="name">Steve Rogers</div>
+                    <div class="message">That is America's ass 🇺🇸🍑</div>
+                </div>
+                <div class="contact">
+                    <div class="pic">
+                        <div class="stark"></div>
+                    </div>
+                    <div class="name">Tony Stark</div>
+                    <div class="message">Uh, he's from space, he came here to steal a necklace from a wizard.</div>
+                </div>
+                <div class="contact">
+                    <div class="pic">
+                        <div class="banner"></div>
+                    </div>
+                    <div class="name">Bruce Banner</div>
+                    <div class="message">Uh, he's from space, he came here to steal a necklace from a wizard.</div>
+                </div>
+                <div class="contact">
+                    <div class="pic">
+                        <div class="thor"></div>
+                    </div>
+                    <div class="name">Thor Odinson</div>
+                    <div class="message">I like this one</div>
+                </div>
+                <div class="contact">
+                    <div class="pic">
+                        <div class="danvers"></div>
+                    </div>
+                    <div class="name">Carol Danvers</div>
+                    <div class="message">Hey Peter Parker, you got something for me</div>
+                </div>
+            </div>
+            <div class="chat">
 
-<form action="" method="post">
-    <label for="">content</label>
-    <textarea name="content" id="" cols="30" rows="10"></textarea>
+                <div class="contact bar">
+                    <div class="pic">
 
-    <button type="submit">Valider</button>
-</form>
+                    </div>
+                    {% if receiveUser.avatar == 'default.png' %}
+                    <img height="20px" width="20px" src="../../../static/img/{{receiveUser.avatar}}" alt="">
+                    {% else %}
+                    <img height="20px" width="20px" src="../../../static/uploads/{{receiveUser.id}}/avatar/{{receiveUser.avatar}}" alt="">  
+                    {% endif %}
+                    <div class="name">{{receiveUser.username}}</div>
+                </div>
+                <div id="chat" class="messages">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="time">{{message.set_date}}</div>
+                     
+                    <!-- <img src="../../../static/img/{{message.receive_by.avatar}}" alt=""> -->
+                    
+                    {% if userLog != message.send_by %}
+                    <div class="message stark">{{message.content}}</div>
+                    {% else %}
+                    <div class="message parker">{{message.content}}</div>
+                    {% endif %} 
+                    {% endfor %}
+                    {% endif %}
+                    <div class="message stark">
+                        <div class="typing typing-1"></div>
+                        <div class="typing typing-2"></div>
+                        <div class="typing typing-3"></div>
+                    </div>
+                </div>
+                
+                
+                    
+            <form action="" method="post">
+                <div class="input">
+                    <i class="fas fa-camera"></i>
+                    <i class="far fa-laugh-beam"></i>
+                    <input type="text" name="content" placeholder="type your message here!">
+                    <button type="submit">Valider</button>
+                </div>
+            </form>
+            </div>
+        </div>
 
-{% endblock body %}
-
+        <script>
+            var chat = document.getElementById('chat');
+            chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+        </script>
+        {% endblock %}
