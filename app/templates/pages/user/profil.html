@@ -89,10 +89,12 @@
                     {% for post in user.results.posts %}
                     <div>
                         <div class="mb-3">
+                            {% if userLog.id == post.user_id %}
                             <form action="" method="post">
                                 <input type="hidden" name="post" value="{{post.id}}">
                                 <button>Suprimer(X)</button>
                             </form>
+                            {% endif %}
                         </div>
                         <div class="p-4 bg-light rounded shadow-sm">
                             <h5 class="mb-3">{{ post.title }}s</h5>

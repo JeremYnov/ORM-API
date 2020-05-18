@@ -169,7 +169,7 @@ def profil(id=None):
     response = requests.get(url)
     user = response.json()
 
-    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user, follow=follow)
+    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user, follow=follow, userLog=userLog)
 
 
 @main.route('/profil/<int:id>/followers', methods=['GET', 'POST'], strict_slashes=False)
