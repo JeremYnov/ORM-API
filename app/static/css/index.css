@@ -6,3 +6,16 @@
 .container{
     padding-top: 20px;
 }
+
+.like-button{
+    background-color: none;
+    border: none;
+    background: transparent;
+}
+.like-button i{
+    color: red !important;
+}
+
+.comment-wrapper{
+    border: 0.1px solid rgb(182, 182, 182);
+}

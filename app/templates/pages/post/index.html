@@ -48,11 +48,12 @@
                 <form action="" method="post">
                     <input type="hidden" name="postId" value="{{ post.id }}">
                     <input type="hidden" name="type" value="like">
-                    <button type="submit" name="like" value="like">like</button>
+                    <button type="submit" name="like" value="like" class="like-button"><i class="far fa-heart"></i></button>
+                    <!-- <button type="submit" name="like" value="like">like</button> -->
                 </form>
             </div>
         </div>
-        <div class="" style="overflow-y: scroll; max-height: 350px;">
+        <div class="comment-wrapper" style="overflow-y: scroll; max-height: 350px;">
             {% for comment in post.comments %}
             {% if currentUser.id == comment.user.id %}
             <div class="mb-3 d-flex flex-row-reverse">

@@ -4,6 +4,7 @@
 {% block link %}
 <link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">
 <link rel="stylesheet" href="{{ url_for('static',filename='css/profil.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/popup.css') }}">
 {% endblock %}
 {% block body %}
 
@@ -225,16 +226,33 @@
         <div class="popup-content">
             <img class="close" src="{{ url_for('static',filename='img/close.png') }}" alt="">
             <form action="" method="post" enctype="multipart/form-data">
-                <label for="">Username</label>
-                <input type="text" name="username" value="{{user.results.username}}">
-
-                <label for="">Age</label>
-                <input type="number" name="age" value="{{user.results.age}}">
-
-                <label for="">Avatar</label>
-                <input type="file" name="avatar">
-
-                <button type="submit">Modifier</button>
+                <div class="form__group field">
+                    <input class="form__field" type="text" name="username" value="{{user.results.username}}"/>
+                    <label for="title" class="form__label">Nom d'utilisateur</label>
+                </div>
+                <!-- <label for="">Username</label>
+                <input type="text" name="username" value="{{user.results.username}}"> -->
+                <div class="form__group field">
+                    <input class="form__field" type="number" name="age" value="{{user.results.age}}"/>
+                    <label for="title" class="form__label">Age</label>
+                </div>
+                <!-- <label for="">Age</label>
+                <input type="number" name="age" value="{{user.results.age}}"> -->
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Upload</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" style="cursor: pointer;" name="avatar">
+                        <label class="custom-file-label" for="avatar" style="cursor: pointer;">Choisir une image</label>
+                    </div>
+                </div>
+                <!-- <label for="">Avatar</label>
+                <input type="file" name="avatar"> -->
+                <div class="submit-button-wrapper">
+                    <button type="submit" class="submit-button">Modifier</button>
+                </div>
+                <!-- <button type="submit">Modifier</button> -->
             </form>
         </div>
     </div>
