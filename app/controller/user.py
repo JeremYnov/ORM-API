@@ -21,14 +21,14 @@ def logout():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.profil'))
-    return render_template('pages/login.html')
+    return render_template('pages/login.html', currentUser=current_user)
 
 
 @main.route('/signup')
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('main.profil'))
-    return render_template('pages/signup.html')
+    return render_template('pages/signup.html', currentUser=current_user)
 
 
 @main.route('/signup', methods=['POST'])
@@ -169,7 +169,7 @@ def profil(id=None):
     response = requests.get(url)
     user = response.json()
 
-    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user, follow=follow, userLog=userLog)
+    return render_template('pages/user/profil.html', stats=stats, error=error, id=id, user=user, follow=follow, userLog=userLog, currentUser=current_user)
 
 
 @main.route('/profil/<int:id>/followers', methods=['GET', 'POST'], strict_slashes=False)
@@ -238,7 +238,7 @@ def followers(id=None):
             db.session.commit()
             return redirect(url_for('main.followers', id=id))
 
-    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button, route=route)
+    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button, route=route, currentUser=current_user)
 
 
 @main.route('/profil/<int:id>/following', methods=['GET', 'POST'], strict_slashes=False)
@@ -312,7 +312,7 @@ def following(id=None):
         db.session.commit()
         return redirect(url_for('main.following', id=id))
 
-    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button, route=route)
+    return render_template('pages/user/follow.html', followers=followers, id=id, userLog=userLog, button=button, route=route, currentUser=current_user)
 
 
 def allowed_image(filename):
