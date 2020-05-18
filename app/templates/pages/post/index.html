@@ -35,7 +35,7 @@
     <div class="card mb-3">
         {% if post.image != None %}
         <img src="{{ url_for('static', filename='uploads/' + post.user.id + '/posts/' + post.id + '/' + post.image) }}"
-            class="card-img-top" alt="...">
+            class="card-img-top" alt="..." height="350">
         {% endif %}
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
@@ -50,26 +50,59 @@
                 </form>
             </div>
         </div>
-        {% for comment in post.comments %}
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img src="{{ url_for('static', filename='uploads/' + comment.user.id + '/avatar/' + comment.user.avatar) }}"
-                        class="card-img" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ comment.user.username }}</h5>
-                        <p class="card-text">{{ comment.content }}</p>
-                        <p class="card-text"><small class="text-muted">Poster par
-                                {{ comment.user.username + ' le ' + comment.publication_date }}</small></p>
+        <div class="" style="overflow-y: scroll; max-height: 350px;">
+            {% for comment in post.comments %}
+            {% if currentUser.id == comment.user.id %}
+            <div class="mb-3 d-flex flex-row-reverse">
+                <div class="row no-gutters">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ comment.user.username }}</h5>
+                            <p class="card-text">{{ comment.content }}</p>
+                            <p class="card-text"><small class="text-muted">Poster par
+                                    {{ comment.user.username + ' le ' + comment.publication_date }}</small></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        {% if comment.user.avatar != 'None' %}
+                        <img src="{{ url_for('static', filename='uploads/' + comment.user.id + '/avatar/' + comment.user.avatar) }}"
+                            class="" alt="..." height="100" width="100">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + comment.user.id + '/avatar/default.png') }}"
+                            class="" alt="..." height="100" width="100">
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
+            {% else %}
+            <div class="mb-3 d-flex flex-row">
+                <div class="row no-gutters">
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        {% if comment.user.avatar != 'None' %}
+                        <img src="{{ url_for('static', filename='uploads/' + comment.user.id + '/avatar/' + comment.user.avatar) }}"
+                            class="" alt="..." height="100" width="100">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + comment.user.id + '/avatar/default.png') }}"
+                            class="" alt="..." height="100" width="100">
+                        {% endif %}
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ comment.user.username }}</h5>
+                            <p class="card-text">{{ comment.content }}</p>
+                            <p class="card-text"><small class="text-muted">Poster par
+                                    {{ comment.user.username + ' le ' + comment.publication_date }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endfor %}
         <form action="" method="post">
-            <div class="card mb-3">
+            <div class="card my-3 mx-5">
                 <textarea name="comment" id="" cols="30" rows="10"></textarea>
                 <input type="hidden" name="postId" value="{{ post.id }}">
                 <input type="hidden" name="type" value="newComment">

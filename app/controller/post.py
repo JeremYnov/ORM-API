@@ -20,6 +20,14 @@ def index():
     user = current_user
     url = request.url_root + 'api/post/' + str(user.id)
 
+    currentUser = {
+        'id': str(user.id),
+        'username': user.username,
+        'age': str(user.age),
+        'mail': user.mail,
+        'avatar': user.avatar
+    }
+
     response = requests.get(url)
     posts = response.json()
 
@@ -35,7 +43,7 @@ def index():
             response = requests.get(url)
             posts = response.json()
 
-            return render_template('pages/post/index.html', posts=posts,
+            return render_template('pages/post/index.html', posts=posts, currentUser=currentUser,
                                    error=resp['error'], message=resp['message'])
 
         elif request.form['type'] == 'newComment':
@@ -48,7 +56,7 @@ def index():
             response = requests.get(url)
             posts = response.json()
 
-            return render_template('pages/post/index.html', posts=posts,
+            return render_template('pages/post/index.html', posts=posts, currentUser=currentUser,
                                    error=resp['error'], message=resp['message'])
 
         elif request.form['type'] == 'like':
@@ -61,10 +69,10 @@ def index():
             response = requests.get(url)
             posts = response.json()
 
-            return render_template('pages/post/index.html', posts=posts,
+            return render_template('pages/post/index.html', posts=posts, currentUser=currentUser,
                                    error=resp['error'], message=resp['message'])
 
-    return render_template('pages/post/index.html', posts=posts)
+    return render_template('pages/post/index.html', posts=posts, currentUser=currentUser)
     # return jsonify(posts)
 
 
