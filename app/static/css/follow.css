@@ -10,3 +10,150 @@
     color: white;
     padding: 0 10px;
 }
+
+.center {
+	position: absolute;
+	top: 55%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.contact-bar {
+    /* margin: 1rem; */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-bottom: 1rem; */
+    height: 4.5rem;
+    border-bottom: 0.1px solid rgb(190, 190, 190);
+  }
+
+.name h2{
+    margin: 0 !important;
+    font-weight: bold;
+
+}
+
+.contact {
+	position: relative;
+	margin-bottom: 1rem;
+	padding-left: 5rem;
+	height: 4.5rem;
+
+	display: flex;
+	flex-direction: column;
+    justify-content: center;
+    border-bottom: 0.1px solid rgb(190, 190, 190);
+}
+.list-message{
+    height: calc(100% - 72px);
+    background-color: #F7F7F7;
+    border-radius:0 0 1rem 1rem;
+}
+
+.contact .pic {
+  position: absolute;
+  left: 20px;
+}
+
+.contact .message, .seen {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.contacts {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translate(-50%, -50%);
+	
+	width: 60vw;
+	height: 32rem;
+	box-sizing: border-box;
+	border-radius: 1rem;
+	
+	background: white;
+	box-shadow: 
+		0 0 8rem 0 rgba(black, 0.1),
+		2rem 2rem 4rem -3rem rgba(black, 0.5);
+	
+	/* transition: transform 500ms; */
+}
+
+.contacts h2 {
+  margin: 0.5rem 0 1.5rem 5rem;
+}
+
+
+.contacts .contact:last-child {
+  margin: 0;
+}
+
+
+
+.form__group{
+    position: relative;
+    padding: 0 ;
+    margin-top: 10px;
+    margin-left: 30px;
+    /* width: 50%; */
+}
+
+.form__field{
+    font-family: inherit;
+    width: 80%;
+    border: 0;
+    border-bottom: 2px solid #9b9b9b;
+    outline: 0;
+    font-size: 1.3rem;
+    color: #9b9b9b;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+.form__field::placeholder{
+    color: #9b9b9b;
+}
+
+/* .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #66FCF1;
+} */
+
+.form__field:focus {
+
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #45A29E, #66FCF1);
+    border-image-slice: 1;
+}
+
+.form__field:focus~.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #11998e;
+    font-weight: 700;
+}
+
+/* reset input */
+.form__field:required {
+    box-shadow: none;
+}
+
+.form__field:invalid {
+    box-shadow: none;
+}
+
+.result_user_js{
+    padding-top: 10px;
+}

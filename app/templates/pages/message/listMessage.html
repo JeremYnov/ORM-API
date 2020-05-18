@@ -20,7 +20,7 @@
             <a href="{{ url_for('message.talk', id=message.receive_by.id) }}">
                 <div class="contact">
                     <div class="pic">
-                        <img height="50px" width="50px" src="../../../static/img/{{message.receive_by.avatar}}" alt="">
+                        <img height="50px" width="50px" src="/static/uploads/{{message.receive_by.id}}/avatar/{{message.receive_by.avatar}}" alt="">
                     </div>
                     <div class="name">{{message.receive_by.username}}</div>
                     <div class="message">{{message.content}}</div>
@@ -30,7 +30,7 @@
             <a href="{{ url_for('message.talk', id=message.send_by.id) }}">
                 <div class="contact">
                     <div class="pic">
-                        <img height="50px" width="50px" src="../../../static/img/{{message.receive_by.avatar}}" alt="">
+                        <img height="50px" width="50px" src="/static/uploads/{{message.receive_by.id}}/avatar/{{message.receive_by.avatar}}" alt="">
                     </div>
                     <div class="name">{{message.send_by.username}}</div>
                     <div class="message">{{message.content}}</div>
