@@ -7,27 +7,72 @@
 
 {% if id == None %}
 <div class="button-wrapper">
-    <button><a href="{{ url_for('main.profil', id=None ) }}">Retourner au profil</a></button>
+    <button type="button" class="btn btn-primary"><a href="{{ url_for('main.profil', id=None ) }}"><i class="fas fa-chevron-left"></i>Retourner au profil</a></button>
+    <button type="button" class="btn btn-primary"><a href="{{ url_for('main.followers', id=None ) }}">Abonnement</a></button>
+    <button type="button" class="btn btn-primary"><a href="{{ url_for('main.following', id=None ) }}">Abonné <i class="fas fa-chevron-right"></i></a></button>
+    <!-- <button><a href="{{ url_for('main.profil', id=None ) }}">Retourner au profil</a></button>
     <button><a href="{{ url_for('main.followers', id=None ) }}">Abonnement</a></button>
-    <button><a href="{{ url_for('main.following', id=None ) }}">Abonné</a></button>
+    <button><a href="{{ url_for('main.following', id=None ) }}">Abonné</a></button> -->
 </div>
 
 {% else %}
 <div class="button-wrapper">
-    <button><a href="{{ url_for('main.profil', id=id ) }}">Retourner au profil</a></button>
+    <button type="button" class="btn btn-primary"><a href="{{ url_for('main.profil', id=id ) }}"><i class="fas fa-chevron-left"></i>Retourner au profil</a></button>
+    <button type="button" class="btn btn-primary"><a href="{{ url_for('main.followers', id=id ) }}">Abonnements</a></button>
+    <button type="button" class="btn btn-primary"><a href="{{ url_for('main.following', id=id ) }}">Abonnés <i class="fas fa-chevron-right"></i></a></button>
+    <!-- <button><a href="{{ url_for('main.profil', id=id ) }}">Retourner au profil</a></button>
     <button><a href="{{ url_for('main.followers', id=id ) }}">Abonnement</a></button>
-    <button><a href="{{ url_for('main.following', id=id ) }}">Abonné</a></button>
+    <button><a href="{{ url_for('main.following', id=id ) }}">Abonné</a></button> -->
 </div>
 {% endif %}
 
 {% if followers == [] %}
 {% if id == None %}
-<p>Tu n'es abonné à personne</p>
+<div class="alert alert-warning" role="alert">
+    Tu n'es abonné à personne
+</div>
 {% else %}
-<p>Cette utilisateur n'est abonné à personne</p>
+<div class="alert alert-warning" role="alert">
+    Cette utilisateur n'est abonné à personne
+</div>
 {% endif %}
 {% else %}
 
+<!-- <div class="center">
+    <div class="contacts">
+        <div class="contact-bar">
+            <div class="name">
+                <h2>Vos conversations</h2>
+            </div>
+        </div>
+        <div class="list-message">
+            {% for message in listMessage %}
+            {% if userLog == message.send_by %}
+            <a href="{{ url_for('message.talk', id=message.receive_by.id) }}">
+                <div class="contact">
+                    <div class="pic">
+                        <img height="50px" width="50px" src="../../../static/img/{{message.receive_by.avatar}}" alt="">
+                    </div>
+                    <div class="name">{{message.receive_by.username}}</div>
+                    <div class="message">{{message.content}}</div>
+                </div>
+            </a>
+            {% else %}
+            <a href="{{ url_for('message.talk', id=message.send_by.id) }}">
+                <div class="contact">
+                    <div class="pic">
+                        <img height="50px" width="50px" src="../../../static/img/{{message.receive_by.avatar}}" alt="">
+                    </div>
+                    <div class="name">{{message.send_by.username}}</div>
+                    <div class="message">{{message.content}}</div>
+                </div>
+            </a>
+            {% endif %}
+
+            {% endfor %}
+        </div>
+    </div>
+</div> -->
 
 {% if (route == 1) or (route == 2) %}
 {% for follower in followers %}
